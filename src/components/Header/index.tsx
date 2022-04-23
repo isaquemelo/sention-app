@@ -1,3 +1,4 @@
+import useSessionStorage from "../../hooks/useLocalStorage";
 import ShortSetionLogo from "../../images/short-sention-logo.svg"
 import User from "../../interfaces/User"
 import UserAccountMenu from "../UserAccountMenu"
@@ -5,7 +6,8 @@ import UserAccountMenu from "../UserAccountMenu"
 import "./style.scss";
 
 export default function Header() {
-    const user: User = { username: "isaquemelo" }
+    const [name] = useSessionStorage('name', false)
+    const user = { username: name }
 
     return (
         <div className="container">

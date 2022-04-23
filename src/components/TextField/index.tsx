@@ -6,20 +6,21 @@ type Props = {
     type: "text" | "password",
     label: string,
     placeholder?: string,
+    isError?: boolean,
     onChange?: onChangeFunction,
 }
 
-export default function TextField({ type, label, placeholder, onChange }: Props) {
+export default function TextField({ type, label, placeholder, isError, onChange }: Props) {
     const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         if (onChange)
             return onChange(ev.target.value)
     }
 
     return (
-        <div className="textfield">
+        <div className={`textfield ${isError ? "textfield--error" : ""}`}>
             <label>
                 <span>{label}</span>
-                <input type={type} placeholder={placeholder} onChange={handleOnChange} />
+                <input type={type} placeholder={placeholder} onChange={handleOnChange} required />
             </label>
         </div>
     );

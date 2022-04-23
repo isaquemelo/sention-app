@@ -14,7 +14,7 @@ type Props = {
 
 export default function Button({ type = "primary", label, isSubmit = false, showArrow = true, onClick }: Props) {
     return (
-        <button className={`button button--${type}`} type={isSubmit ? "submit" : "button"}>
+        <button className={`button button--${type}`} type={isSubmit ? "submit" : "button"} onClick={onClick}>
             <span>{label}</span>
             {showArrow && <img src={arrowRight} alt="Arrow to the right" />}
         </button>
