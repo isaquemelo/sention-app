@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import User from "../../interfaces/User"
-import profileIcon from "../../images/profile.svg"
+import profileIcon from "../../../public/images/profile.svg"
 
 import "./style.scss";
 import { Link } from "react-router-dom";

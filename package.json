@@ -4,14 +4,16 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "serve": "vite build && vite preview",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^0.26.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "vite-plugin-pwa": "^0.12.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

@@ -1,5 +1,5 @@
 import useSessionStorage from "../../hooks/useLocalStorage";
-import ShortSetionLogo from "../../images/short-sention-logo.svg"
+import ShortSetionLogo from "../../../public/images/short-sention-logo.svg"
 import User from "../../interfaces/User"
 import UserAccountMenu from "../UserAccountMenu"
 
