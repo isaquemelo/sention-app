@@ -6,9 +6,10 @@ import {
 import AuthRoute from './components/AuthRoute'
 
 import InjectLayoutElements from './components/InjectLayoutElements'
+import DeviceSetup from './pages/DeviceSetup'
+
 import Login from './pages/Login'
 import Logout from './pages/Logout'
-import SetupNewDevice from './pages/SetupNewDevice'
 
 function App() {
 
@@ -24,9 +25,9 @@ function App() {
           </AuthRoute>
         } />
 
-        <Route path="/setup-new-device" element={
+        <Route path="/setup-device" element={
           <AuthRoute>
-            <SetupNewDevice />
+            <InjectLayoutElements element={<DeviceSetup />} />
           </AuthRoute>
         } />
       </Routes>

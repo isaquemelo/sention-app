@@ -1,0 +1,15 @@
+.typograph {
+    &--size-l {
+        font-size: 1.5rem;
+    }
+
+    &--size-m {
+        font-size: 1rem;
+    }
+
+    &--type-title {
+        font-weight: bold;
+        margin-top: 2.75rem;
+        margin-bottom: 0.6875rem;
+    }
+}
