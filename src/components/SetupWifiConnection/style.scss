@@ -1,0 +1,24 @@
+.setup-device-wifi-connection {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+
+    .wifi-icon {
+        max-width: 64px;
+        margin: 0 auto;
+    }
+
+    .button {
+        margin-top: 60px;
+    }
+
+    h1 {
+        margin-bottom: 21px;
+    }
+
+    .disabled {
+        filter: grayscale(1);
+        pointer-events: none;
+        opacity: 0.3;
+    }
+}

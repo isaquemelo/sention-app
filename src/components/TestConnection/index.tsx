@@ -12,7 +12,7 @@ type Props = {
     nextStep: Function,
 }
 
-export default function SetupDeviceStep1({ nextStep }: Props) {
+export default function TestConnection({ nextStep }: Props) {
     const [isTestingConnection, setIsTestingConnection] = useState(false)
 
     const testConnection = () => {
@@ -27,7 +27,7 @@ export default function SetupDeviceStep1({ nextStep }: Props) {
     }
 
     return (
-        <div className="setup-device-step-one">
+        <div className="setup-device-test-connection">
             <img className="wifi-icon" src={wifiIcon} alt="Wi-Fi icon" />
 
             <Typography size="l" type="title">

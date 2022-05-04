@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 
 import "./style.scss";
 import Button from "../../components/Button";
-import SetupDeviceStep1 from "../../components/SetupDeviceStep1";
+import TestConnection from "../../components/TestConnection";
+import PreSetupWifiConnection from "../../components/PreSetupWifiConnection";
+import SetupWifiConnection from "../../components/SetupWifiConnection";
 
 
 export default function DeviceSetup() {
@@ -16,12 +18,13 @@ export default function DeviceSetup() {
     const navigate = useNavigate();
 
     const nextStep = () => {
-
+        setStepIndex(stepIndex + 1)
     }
 
     const steps = [
-        <SetupDeviceStep1 nextStep={nextStep} />,
-        <span>Step 2</span>,
+        <TestConnection nextStep={nextStep} />,
+        <PreSetupWifiConnection nextStep={nextStep} />,
+        <SetupWifiConnection nextStep={nextStep} />
     ]
 
     return (

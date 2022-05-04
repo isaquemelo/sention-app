@@ -17,6 +17,8 @@ export default function Login() {
 
     const [token, setUserToken] = useSessionStorage("token", false)
     const [name, setName] = useSessionStorage("name", false)
+    const [user, setUsernameStorage] = useSessionStorage("username", false)
+    const [pass, setPasswordStorage] = useSessionStorage("password", false)
 
     const navigate = useNavigate();
 
@@ -35,6 +37,8 @@ export default function Login() {
         doLogin(username, password).then(({ name, token }) => {
             setUserToken(token)
             setName(name)
+            setUsernameStorage(username)
+            setPasswordStorage(password)
             navigate("/", { replace: true });
         }).catch(() => {
             setError(true);

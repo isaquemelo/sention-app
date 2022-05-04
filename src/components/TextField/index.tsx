@@ -7,10 +7,11 @@ type Props = {
     label: string,
     placeholder?: string,
     isError?: boolean,
+    autocomplete?: boolean,
     onChange?: onChangeFunction,
 }
 
-export default function TextField({ type, label, placeholder, isError, onChange }: Props) {
+export default function TextField({ type, label, placeholder, autocomplete = true, isError, onChange }: Props) {
     const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         if (onChange)
             return onChange(ev.target.value)
@@ -20,7 +21,7 @@ export default function TextField({ type, label, placeholder, isError, onChange 
         <div className={`textfield ${isError ? "textfield--error" : ""}`}>
             <label>
                 <span>{label}</span>
-                <input type={type} placeholder={placeholder} onChange={handleOnChange} required />
+                <input type={type} placeholder={placeholder} onChange={handleOnChange} required autoComplete={autocomplete ? "on" : "false"} />
             </label>
         </div>
     );
