@@ -17,7 +17,7 @@ export default function Button({ type = "primary", label, disabled = false, isSu
     return (
         <button disabled={disabled} className={`button button--${type} ${disabled ? 'button--disabled' : ''}`} type={isSubmit ? "submit" : "button"} onClick={onClick}>
             <span>{label}</span>
-            {showArrow && <img src={arrowRight} alt="Arrow to the right" />}
+            {!disabled && showArrow && <img src={arrowRight} alt="Arrow to the right" />}
         </button>
     );
 }

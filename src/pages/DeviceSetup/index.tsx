@@ -10,6 +10,7 @@ import Button from "../../components/Button";
 import TestConnection from "../../components/TestConnection";
 import PreSetupWifiConnection from "../../components/PreSetupWifiConnection";
 import SetupWifiConnection from "../../components/SetupWifiConnection";
+import GetBackToOrdinaryNetwork from "../../components/GetBackToOrdinaryNetwork";
 
 
 export default function DeviceSetup() {
@@ -18,13 +19,18 @@ export default function DeviceSetup() {
     const navigate = useNavigate();
 
     const nextStep = () => {
+        if (stepIndex + 1 === 4) {
+            return navigate('/devices', { replace: true })
+        }
+
         setStepIndex(stepIndex + 1)
     }
 
     const steps = [
         <TestConnection nextStep={nextStep} />,
         <PreSetupWifiConnection nextStep={nextStep} />,
-        <SetupWifiConnection nextStep={nextStep} />
+        <SetupWifiConnection nextStep={nextStep} />,
+        <GetBackToOrdinaryNetwork nextStep={nextStep} />
     ]
 
     return (
