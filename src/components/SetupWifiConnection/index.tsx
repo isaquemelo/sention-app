@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 import "./style.scss";
-import networkIcon from '../../../public/images/network-icon.svg'
+import networkIcon from '@images/network-icon.svg'
 import Typography from "../Typography";
 import Button from "../Button";
 import TextField from "../TextField";

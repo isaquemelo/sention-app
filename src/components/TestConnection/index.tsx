@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 import "./style.scss";
-import wifiIcon from '../../../public/images/wifi-icon.svg'
+import wifiIcon from '@images/wifi-icon.svg'
 import Typography from "../Typography";
 import Button from "../Button";
 

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-// import sentionLogo from "../../../public/images/sention-logo.svg";
+// import sentionLogo from "@images/sention-logo.svg";
 // import Button from "../../components/Button";
 // import TextField from "../../components/TextField";
 

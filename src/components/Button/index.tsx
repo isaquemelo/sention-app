@@ -1,4 +1,4 @@
-import arrowRight from "../../../public/images/arrow-right.svg";
+import arrowRight from "@images/arrow-right.svg";
 
 import "./style.scss";
 
