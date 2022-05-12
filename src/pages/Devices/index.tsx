@@ -13,9 +13,8 @@ import Typography from "../../components/Typography";
 import { useQuery } from "react-query";
 import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
-import Device from "../../types/Device";
 
-export default function Devices() {
+export default function Device() {
     const navigate = useNavigate();
 
     const [userId] = useSessionStorage('userId', false)
@@ -33,7 +32,7 @@ export default function Devices() {
                         devices?.map(device => {
                             return <ListItem
                                 key={device.id}
-                                label={device.id.slice(0, 7)}
+                                label={device.accessCode}
                                 options={[{
                                     label: "Option 1", onClick: () => {
                                         console.log("Click inside option")
@@ -41,7 +40,7 @@ export default function Devices() {
                                 }]}
                                 onItemClick={
                                     () => {
-                                        console.log("List item clicked")
+                                        navigate(`/devices/${device.id}`)
                                     }
                                 }
                             />

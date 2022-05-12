@@ -6,6 +6,7 @@ import {
 import AuthRoute from './components/AuthRoute'
 
 import InjectLayoutElements from './components/InjectLayoutElements'
+import Device from './pages/Device'
 import Devices from './pages/Devices'
 import DeviceSetup from './pages/DeviceSetup'
 
@@ -35,6 +36,12 @@ function App() {
         <Route path="/devices" element={
           <AuthRoute>
             <InjectLayoutElements element={<Devices />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/devices/:deviceId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<Device />} />
           </AuthRoute>
         } />
       </Routes>
