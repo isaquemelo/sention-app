@@ -31,7 +31,7 @@ export default function Device() {
     return (
         <div className="devices">
             <div className="container page">
-                <Typography type="title" size="l">{`Device ${device?.accessCode}`}</Typography>
+                <Typography type="title" size="l">{`Device ${device?.accessCode ?? ""}`}</Typography>
 
                 {sensors.length > 0 &&
                     <div className="sensors-list">
