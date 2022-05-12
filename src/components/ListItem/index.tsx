@@ -15,13 +15,14 @@ type Props = {
         onClick: onClick,
     }[] | false,
     onItemClick?: onClick,
+    isSkeleton?: boolean
 }
 
-export default function ListItem({ label, icon: Icon = false, options = false, onItemClick }: Props) {
+export default function ListItem({ label, icon: Icon = false, options = false, onItemClick, isSkeleton }: Props) {
     const [showMenu, setShowMenu] = useState(false)
 
     return (
-        <div className="list-item">
+        <div className={`list-item ${isSkeleton ? "list-item--skeleton" : ""}`}>
             <div className="list-item-info" onClick={onItemClick}>
                 {Icon && <div className="list-item-info__icon">
                     {Icon ?? <></>}

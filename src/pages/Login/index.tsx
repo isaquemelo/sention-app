@@ -16,6 +16,7 @@ export default function Login() {
     const [error, setError] = useState(false)
 
     const [token, setUserToken] = useSessionStorage("token", false)
+    const [userId, setUserId] = useSessionStorage("userId", false)
     const [name, setName] = useSessionStorage("name", false)
     const [user, setUsernameStorage] = useSessionStorage("username", false)
     const [pass, setPasswordStorage] = useSessionStorage("password", false)
@@ -34,7 +35,8 @@ export default function Login() {
     const handleSubmit = async () => {
         setError(false);
 
-        doLogin(username, password).then(({ name, token }) => {
+        doLogin(username, password).then(({ name, token, id }) => {
+            setUserId(id)
             setUserToken(token)
             setName(name)
             setUsernameStorage(username)

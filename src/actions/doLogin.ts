@@ -1,16 +1,19 @@
-import urls from '../constants/urls'
+import resources from '../constants/resources'
 import axios from 'axios'
 
 type ResponseType = {
     name: string,
     token: string,
+    id: string,
 }
 
 export default function doLogin(user: string, password: string): Promise<ResponseType> {
-    return axios.post(`${urls.SENTION_API_BASE + urls.AUTH_USER}`, {
+    return axios.post(resources.AUTH_USER, {
         email: user, password
     }).then(response => {
-        const { name, token } = response.data;
-        return { name, token: "Bearer " + token };
+        console.log(response.data)
+
+        const { name, token, id } = response.data;
+        return { name, token: "Bearer " + token, id };
     })
 }

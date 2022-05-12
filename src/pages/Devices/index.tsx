@@ -10,10 +10,18 @@ import "./style.scss";
 import Button from "../../components/Button";
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
-
+import { useQuery } from "react-query";
+import { getDevices } from "../../services/devices/getDevices";
+import useSessionStorage from "../../hooks/useLocalStorage";
+import Device from "../../types/Device";
 
 export default function Devices() {
     const navigate = useNavigate();
+
+    const [userId] = useSessionStorage('userId', false)
+    const { isLoading, data: devices } = useQuery("devices", () => getDevices(userId))
+
+    const skeletonArray = new Array(15).fill(0)
 
     return (
         <div className="devices">
@@ -21,35 +29,30 @@ export default function Devices() {
                 <Typography type="title" size="l">Devices</Typography>
 
                 <div className="devices-list">
-                    <ListItem
-                        label="Room sensor"
-                        icon={<TemperatureIcon />}
-                        options={[{
-                            label: "Option 1", onClick: () => {
-                                console.log("Click inside option")
-                            }
-                        }]}
-                        onItemClick={
-                            () => {
-                                console.log("List item clicked")
-                            }
-                        }
-                    />
+                    {!isLoading &&
+                        devices?.map(device => {
+                            return <ListItem
+                                key={device.id}
+                                label={device.id.slice(0, 7)}
+                                options={[{
+                                    label: "Option 1", onClick: () => {
+                                        console.log("Click inside option")
+                                    }
+                                }]}
+                                onItemClick={
+                                    () => {
+                                        console.log("List item clicked")
+                                    }
+                                }
+                            />
+                        })
+                    }
 
-                    <ListItem
-                        label="Light sensor"
-                        // icon={<LightSensor />}
-                        options={[{
-                            label: "Option 1", onClick: () => {
-                                console.log("Click inside option")
-                            }
-                        }]}
-                        onItemClick={
-                            () => {
-                                // console.log("List item clicked")
-                            }
-                        }
-                    />
+                    {isLoading &&
+                        skeletonArray.map(({ value, index }) => {
+                            return <ListItem key={index} label={index} isSkeleton={true} />
+                        })
+                    }
                 </div>
             </div>
 
