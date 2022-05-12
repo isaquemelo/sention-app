@@ -27,7 +27,7 @@ function App() {
           </AuthRoute>
         } />
 
-        <Route path="/setup-device" element={
+        <Route path="/devices/setup-device" element={
           <AuthRoute>
             <InjectLayoutElements element={<DeviceSetup />} />
           </AuthRoute>
