@@ -13,6 +13,7 @@ import Typography from "../../components/Typography";
 import { useQuery } from "react-query";
 import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
+import FloatingButton from "../../components/FloatingButton";
 
 export default function Device() {
     const navigate = useNavigate();
@@ -34,8 +35,8 @@ export default function Device() {
                                 key={device.id}
                                 label={device.accessCode}
                                 options={[{
-                                    label: "Option 1", onClick: () => {
-                                        console.log("Click inside option")
+                                    label: "Delete device", onClick: () => {
+                                        console.log("Disassociate")
                                     }
                                 }]}
                                 onItemClick={
@@ -54,6 +55,13 @@ export default function Device() {
                     }
                 </div>
             </div>
+
+            <FloatingButton options={[
+                {
+                    label: 'Associate new device',
+                    onClick: () => navigate('setup-device')
+                },
+            ]} />
 
         </div>
 
