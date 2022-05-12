@@ -15,6 +15,7 @@ import ListSensors from "../../components/ListSensors";
 import Sensor from "../../types/Sensor";
 import Actuator from "../../types/Actuator";
 import ListActuators from "../../components/ListActuators";
+import FloatingButton from "../../components/FloatingButton";
 
 export default function Devices() {
 
@@ -69,6 +70,7 @@ export default function Devices() {
                     </div>
                 }
 
+                <FloatingButton />
 
             </div>
 
