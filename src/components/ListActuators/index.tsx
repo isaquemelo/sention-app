@@ -1,42 +1,39 @@
 import { useNavigate } from "react-router-dom";
-import buildSensorIcon from "../../builders/buildSensorIcon";
-import Sensor from "../../types/Sensor";
+import Actuator from "../../types/Actuator";
+
 import ListItem from "../ListItem";
 
 type Props = {
-    sensors: Sensor[]
+    actuators: Actuator[]
 }
 
-export default function ListSensors({ sensors }: Props) {
+export default function ListActuators({ actuators }: Props) {
     const navigate = useNavigate();
 
     return (
         <>
             {
-                sensors.map(sensor => {
-                    const SensorIcon = buildSensorIcon(sensor.type)
-
+                actuators.map(({ id, name }) => {
                     return <ListItem
-                        key={sensor.id}
-                        icon={<SensorIcon />}
-                        label={sensor.name}
+                        key={id}
+                        label={name}
                         options={[
                             {
-                                label: "Edit sensor",
+                                label: "Edit actuator",
                                 onClick: () => {
-                                    navigate(`/sensors/${sensor.id}`)
+                                    navigate(`/actuators/${id}`)
                                 },
                             },
                             {
-                                label: "Delete sensor",
+                                label: "Delete actuator",
                                 onClick: () => {
                                     // Trigger device mutation
-                                    console.log("Delete sensor")
+                                    console.log("Delete actuator")
                                 }
                             }]}
                         onItemClick={
                             () => {
-                                navigate(`/sensors/${sensor.id}`)
+                                navigate(`/actuators/${id}`)
                             }
                         }
                     />

@@ -1,10 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ReactComponent as TemperatureIcon } from '@images/sensor-icons/temperature.svg';
-import { ReactComponent as LightSensor } from '@images/sensor-icons/light.svg';
-// import sentionLogo from "@images/sention-logo.svg";
-// import Button from "../../components/Button";
-// import TextField from "../../components/TextField";
+import { ReactComponent as BoxIcon } from '@images/box.svg';
 
 import "./style.scss";
 
@@ -18,6 +14,7 @@ import { getDevice } from "../../services/devices/getDevice";
 import ListSensors from "../../components/ListSensors";
 import Sensor from "../../types/Sensor";
 import Actuator from "../../types/Actuator";
+import ListActuators from "../../components/ListActuators";
 
 export default function Devices() {
 
@@ -34,38 +31,45 @@ export default function Devices() {
             <div className="container page">
                 <Typography type="title" size="l">{`Device ${device?.accessCode}`}</Typography>
 
-                <div className="sensors-list">
-                    <Typography type="title" size="m">Sensors</Typography>
+                {sensors.length > 0 &&
+                    <div className="sensors-list">
+                        <Typography type="title" size="m">Sensors</Typography>
 
-                    {!isLoading && <ListSensors sensors={sensors} />}
+                        {!isLoading && <ListSensors sensors={sensors} />}
 
-                    {isLoading &&
-                        skeletonArray.map(({ value, index }) => {
-                            return <ListItem key={index} label={index} isSkeleton={true} />
-                        })
-                    }
-                </div>
+                        {isLoading &&
+                            skeletonArray.map(({ value, index }) => {
+                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            })
+                        }
+                    </div>
+                }
 
-                <div className="actuators-list">
-                    {!isLoading &&
-                        device?.actuators?.map(actuator => {
-                            return <ListItem
-                                key={actuator.id}
-                                label={actuator.name}
-                                options={[{
-                                    label: "Option 1", onClick: () => {
-                                        console.log("Click inside option")
-                                    }
-                                }]}
-                                onItemClick={
-                                    () => {
-                                        navigate(`/actuators/${actuator.id}`)
-                                    }
-                                }
-                            />
-                        })
-                    }
-                </div>
+                {actuators.length > 0 &&
+                    <div className="actuators-list">
+                        <Typography type="title" size="m">Acutators</Typography>
+
+                        {!isLoading &&
+                            <ListActuators actuators={actuators} />
+                        }
+
+                        {isLoading &&
+                            skeletonArray.map(({ value, index }) => {
+                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            })
+                        }
+                    </div>
+                }
+
+                {!isLoading && !sensors.length && !actuators.length &&
+                    <div className="no-results">
+                        <BoxIcon />
+                        <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
+                        <Typography type="body" alignment="center" size="m">Click in the plus icon to add sensors and actuators to your device.</Typography>
+                    </div>
+                }
+
+
             </div>
 
         </div>
