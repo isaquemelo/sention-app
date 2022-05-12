@@ -17,10 +17,11 @@ import Actuator from "../../types/Actuator";
 import ListActuators from "../../components/ListActuators";
 import FloatingButton from "../../components/FloatingButton";
 
-export default function Devices() {
-
+export default function Device() {
     const { deviceId = "" } = useParams();
     const { isLoading, data: device } = useQuery(["device", deviceId], () => getDevice(deviceId))
+
+    const navigate = useNavigate();
 
     const sensors: Sensor[] = device?.sensors || []
     const actuators: Actuator[] = device?.actuators || []
@@ -70,7 +71,17 @@ export default function Devices() {
                     </div>
                 }
 
-                <FloatingButton />
+                <FloatingButton options={[
+                    {
+                        label: 'Add new sensor',
+                        onClick: () => navigate('sensor')
+                    },
+
+                    {
+                        label: 'Add new actuator',
+                        onClick: () => navigate('actuator')
+                    },
+                ]} />
 
             </div>
 
