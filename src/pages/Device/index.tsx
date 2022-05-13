@@ -8,7 +8,7 @@ import "./style.scss";
 
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import useSessionStorage from "../../hooks/useLocalStorage";
 
 import numbers from "../../constants/numbers";
@@ -19,12 +19,27 @@ import Actuator from "../../types/Actuator";
 import ListActuators from "../../components/ListActuators";
 import FloatingButton from "../../components/FloatingButton";
 import ShortHeader from "../../components/ShortHeader";
+import { deleteDevice } from "../../services/devices/deleteDevice";
 
 export default function Device() {
     const { deviceId = "" } = useParams();
     const { isLoading, data: device } = useQuery(["device", deviceId], () => getDevice(deviceId))
 
+    const queryClient = useQueryClient()
     const navigate = useNavigate();
+
+    const { mutate: removeDevice } = useMutation(
+        () => {
+            return deleteDevice(deviceId)
+        },
+        {
+            onSuccess: async () => {
+                await queryClient.invalidateQueries("devices");
+                navigate('../devices')
+            }
+        }
+    );
+
 
     const sensors: Sensor[] = device?.sensors || []
     const actuators: Actuator[] = device?.actuators || []
@@ -35,7 +50,7 @@ export default function Device() {
         <div className="device">
             <ShortHeader title={device?.accessCode ?? ""} icon={<DeviceIcon />} options={[{
                 label: "Delete device", onClick: () => {
-                    console.log("Disassociate")
+                    removeDevice()
                 }
             }]} />
 

@@ -10,16 +10,30 @@ import "./style.scss";
 import Button from "../../components/Button";
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
 import FloatingButton from "../../components/FloatingButton";
+import { deleteDevice } from "../../services/devices/deleteDevice";
 
 export default function Device() {
     const navigate = useNavigate();
 
     const [userId] = useSessionStorage('userId', false)
     const { isLoading, data: devices } = useQuery("devices", () => getDevices(userId))
+
+    const queryClient = useQueryClient()
+
+    const { mutate: removeDevice } = useMutation(
+        (deviceId: string) => {
+            return deleteDevice(deviceId)
+        },
+        {
+            onSuccess: async () => {
+                await queryClient.invalidateQueries("devices");
+            }
+        }
+    );
 
     const skeletonArray = new Array(15).fill(0)
 
@@ -36,7 +50,7 @@ export default function Device() {
                                 label={device.accessCode}
                                 options={[{
                                     label: "Delete device", onClick: () => {
-                                        console.log("Disassociate")
+                                        removeDevice(device.id)
                                     }
                                 }]}
                                 onItemClick={

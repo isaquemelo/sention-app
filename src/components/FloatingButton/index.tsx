@@ -17,10 +17,23 @@ export default function FloatingButton({ options }: Props) {
     const [displayMenu, setDisplayMenu] = useState(false);
     const toggleDisplayMenu = () => setDisplayMenu(!displayMenu);
 
+    const executeFirstOption = () => {
+        console.log("aaaa")
+        const option = options && options[0] ? options[0] : false
+
+        if (option) {
+            option.onClick()
+        }
+    }
+
+    const isSingleOption = options && options.length <= 1
+    // const isSingleOption = false
+
     return (
         <div className="floating-action-button">
-            <FloatingButtonIcon onClick={toggleDisplayMenu} />
-            <OverlayedMenu show={displayMenu} options={options} toggleShow={toggleDisplayMenu} />
+            <FloatingButtonIcon onClick={!isSingleOption ? toggleDisplayMenu : executeFirstOption} />
+            {!isSingleOption && <OverlayedMenu show={displayMenu} options={options} toggleShow={toggleDisplayMenu} />}
+
         </div>
     )
 }
