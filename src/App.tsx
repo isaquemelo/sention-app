@@ -6,12 +6,14 @@ import {
 import AuthRoute from './components/AuthRoute'
 
 import InjectLayoutElements from './components/InjectLayoutElements'
+import Actuators from './pages/Actuators'
 import Device from './pages/Device'
 import Devices from './pages/Devices'
 import DeviceSetup from './pages/DeviceSetup'
 
 import Login from './pages/Login'
 import Logout from './pages/Logout'
+import Sensors from './pages/Sensors'
 
 function App() {
 
@@ -44,6 +46,20 @@ function App() {
             <InjectLayoutElements element={<Device />} />
           </AuthRoute>
         } />
+
+
+        <Route path="/sensors" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<Sensors />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/actuators" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<Actuators />} />
+          </AuthRoute>
+        } />
+
       </Routes>
     </Router>
   )
