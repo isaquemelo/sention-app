@@ -1,0 +1,26 @@
+.short-header {
+    background-color: var(--primary-color);
+    padding: 25px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &--back {
+        margin-right: 18px;
+    }
+
+    &--title {
+        color: white;
+        font-weight: 500;
+        line-height: 0;
+    }
+
+    &--icon {
+        margin-right: 15px;
+    }
+
+    .right, .left {
+        display: flex;
+        align-items: center;
+    }
+}

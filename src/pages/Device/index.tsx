@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReactComponent as BoxIcon } from '@images/box.svg';
+import { ReactComponent as DeviceIcon } from '@images/device.svg';
+
 
 import "./style.scss";
 
@@ -16,6 +18,7 @@ import Sensor from "../../types/Sensor";
 import Actuator from "../../types/Actuator";
 import ListActuators from "../../components/ListActuators";
 import FloatingButton from "../../components/FloatingButton";
+import ShortHeader from "../../components/ShortHeader";
 
 export default function Device() {
     const { deviceId = "" } = useParams();
@@ -29,9 +32,15 @@ export default function Device() {
     const skeletonArray = new Array(15).fill(0)
 
     return (
-        <div className="devices">
+        <div className="device">
+            <ShortHeader title={device?.accessCode ?? ""} icon={<DeviceIcon />} options={[{
+                label: "Delete device", onClick: () => {
+                    console.log("Disassociate")
+                }
+            }]} />
+
             <div className="container page">
-                <Typography type="title" size="l">{`Device ${device?.accessCode ?? ""}`}</Typography>
+                {/* <Typography type="title" size="l">{`Device ${device?.accessCode ?? ""}`}</Typography> */}
 
                 {sensors.length > 0 &&
                     <div className="sensors-list">
