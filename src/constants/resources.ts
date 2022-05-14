@@ -5,6 +5,7 @@ const resources = {
     'GET_USER': `${urls.SENTION_API_BASE}/user`,
     'GET_DEVICE': `${urls.SENTION_API_BASE}/user/devices`,
     'DELETE_DEVICE': `${urls.SENTION_API_BASE}/user/devices/dissociate`,
+    'DELETE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors`,
 }
 
 export default resources;

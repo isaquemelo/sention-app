@@ -22,9 +22,9 @@ export default function OverlayedMenu({ show = true, options, toggleShow }: Prop
                     <ul className="overlayed-menu-list">
                         <button id="close-menu" onClick={() => toggleShow()}> <CloseIcon /> </button>
 
-                        {options && options.map(({ key, label, onClick }) => {
+                        {options && options.map(({ key, label, onClick }, index) => {
                             return (
-                                <li key={key}>
+                                <li key={key ?? index + label}>
                                     <button aria-label={label} onClick={onClick}>
                                         {label}
                                     </button>
