@@ -15,6 +15,9 @@ import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
 import FloatingButton from "../../components/FloatingButton";
 import { deleteDevice } from "../../services/devices/deleteDevice";
+import ShortHeader from "../../components/ShortHeader";
+import ListSensors from "../../components/ListSensors";
+import ListActuators from "../../components/ListActuators";
 
 export default function Sensors() {
     const navigate = useNavigate();
@@ -38,46 +41,46 @@ export default function Sensors() {
     const skeletonArray = new Array(15).fill(0)
 
     return (
-        <div className="devices">
-            <div className="container page">
-                <Typography type="title" size="l">Sensors</Typography>
+        <>
+            <ShortHeader title="Sensors" />
 
-                <div className="devices-list">
-                    {!isLoading &&
-                        devices?.map(device => {
-                            return <ListItem
-                                key={device.id}
-                                label={device.accessCode}
-                                options={[{
-                                    label: "Delete device", onClick: () => {
-                                        removeDevice(device.id)
-                                    }
-                                }]}
-                                onItemClick={
-                                    () => {
-                                        navigate(`/devices/${device.id}`)
-                                    }
-                                }
-                            />
-                        })
-                    }
+            <div className="sensors">
+                <div className="container page">
+                    <Typography type="title" size="l"></Typography>
 
-                    {isLoading &&
-                        skeletonArray.map(({ value, index }) => {
-                            return <ListItem key={index} label={index} isSkeleton={true} />
-                        })
-                    }
+                    <div className="sensors-list">
+                        {!isLoading &&
+                            devices?.map(device => {
+                                const shouldBeRendered = (device.sensors.length >= 1)
+                                return shouldBeRendered && (
+                                    <>
+                                        <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
+
+                                        <div className="list-sensors">
+                                            {/* <Typography className="sensor-name" type="body" size="m">Sensors</Typography> */}
+                                            <ListSensors sensors={device.sensors} />
+                                        </div>
+                                    </>
+                                )
+                            })
+                        }
+
+                        {isLoading &&
+                            skeletonArray.map(({ value, index }) => {
+                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            })
+                        }
+                    </div>
                 </div>
+
+                <FloatingButton options={[
+                    {
+                        label: 'Associate new device',
+                        onClick: () => navigate('setup-device')
+                    },
+                ]} />
+
             </div>
-
-            <FloatingButton options={[
-                {
-                    label: 'Associate new device',
-                    onClick: () => navigate('setup-device')
-                },
-            ]} />
-
-        </div>
-
+        </>
     )
 }

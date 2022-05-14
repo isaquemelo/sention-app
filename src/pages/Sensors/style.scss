@@ -1,9 +1,16 @@
-.devices{
+.sensors{
     display: flex;
     align-items: center;
     justify-content: center;
 
     &-list {
-        
+        h1.device-name {
+            // margin-bottom: 0px;
+        }
+
+        .sensor-name {
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
     }
 }

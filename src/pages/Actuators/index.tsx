@@ -15,6 +15,8 @@ import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
 import FloatingButton from "../../components/FloatingButton";
 import { deleteDevice } from "../../services/devices/deleteDevice";
+import ShortHeader from "../../components/ShortHeader";
+import ListActuators from "../../components/ListActuators";
 
 export default function Actuators() {
     const navigate = useNavigate();
@@ -22,62 +24,49 @@ export default function Actuators() {
     const [userId] = useSessionStorage('userId', false)
     const { isLoading, data: devices } = useQuery("devices", () => getDevices(userId))
 
-    const queryClient = useQueryClient()
-
-    const { mutate: removeDevice } = useMutation(
-        (deviceId: string) => {
-            return deleteDevice(deviceId)
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries("devices");
-            }
-        }
-    );
-
     const skeletonArray = new Array(15).fill(0)
 
     return (
-        <div className="devices">
-            <div className="container page">
-                <Typography type="title" size="l">Actuators</Typography>
+        <>
+            <ShortHeader title="Actuators" />
 
-                <div className="devices-list">
-                    {!isLoading &&
-                        devices?.map(device => {
-                            return <ListItem
-                                key={device.id}
-                                label={device.accessCode}
-                                options={[{
-                                    label: "Delete device", onClick: () => {
-                                        removeDevice(device.id)
-                                    }
-                                }]}
-                                onItemClick={
-                                    () => {
-                                        navigate(`/devices/${device.id}`)
-                                    }
-                                }
-                            />
-                        })
-                    }
+            <div className="actuators">
+                <div className="container page">
+                    <Typography type="title" size="l"></Typography>
 
-                    {isLoading &&
-                        skeletonArray.map(({ value, index }) => {
-                            return <ListItem key={index} label={index} isSkeleton={true} />
-                        })
-                    }
+                    <div className="actuators-list">
+                        {!isLoading &&
+                            devices?.map(device => {
+                                const shouldBeRendered = (device.actuators.length >= 1)
+                                return shouldBeRendered && (
+                                    <>
+                                        <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
+
+                                        <div className="list-actuators">
+                                            {/* <Typography className="sensor-name" type="body" size="m">Actuators</Typography> */}
+                                            <ListActuators actuators={device.actuators} />
+                                        </div>
+                                    </>
+                                )
+                            })
+                        }
+
+                        {isLoading &&
+                            skeletonArray.map(({ value, index }) => {
+                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            })
+                        }
+                    </div>
                 </div>
+
+                <FloatingButton options={[
+                    {
+                        label: 'Associate new device',
+                        onClick: () => navigate('setup-device')
+                    },
+                ]} />
+
             </div>
-
-            <FloatingButton options={[
-                {
-                    label: 'Associate new device',
-                    onClick: () => navigate('setup-device')
-                },
-            ]} />
-
-        </div>
-
+        </>
     )
 }

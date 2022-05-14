@@ -4,14 +4,15 @@ type Props = {
     size?: 'l' | 'm' | 's',
     type: 'title' | 'body',
     alignment?: 'center' | 'left',
-    children: string,
+    children?: string,
+    className?: string,
 }
 
-export default function Typography({ size = 'm', type, alignment = 'left', children }: Props) {
+export default function Typography({ size = 'm', type, alignment = 'left', children, className = '' }: Props) {
     const classesNames = `typograph typograph--size-${size} typograph--align-${alignment} typograph--type-${type}`
     return (
         type === 'title' ?
-            <h1 className={classesNames}>{children}</h1> :
-            <p className={classesNames}>{children}</p>
+            <h1 className={`${classesNames} ${className}`}>{children}</h1> :
+            <p className={`${classesNames} ${className}`}>{children}</p>
     )
 }

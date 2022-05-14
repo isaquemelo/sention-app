@@ -40,11 +40,15 @@ export default function ShortHeader({ title, icon: Icon, options }: Props) {
             </div>
 
             <div className='left'>
-                <button onClick={() => setShowMenu(true)}>
-                    <MenuIcon />
-                </button>
+                {options && options.length >= 1 &&
+                    <>
+                        <button onClick={() => setShowMenu(true)}>
+                            <MenuIcon />
+                        </button>
 
-                <OverlayedMenu show={showMenu} options={options} toggleShow={() => setShowMenu(!showMenu)} />
+                        <OverlayedMenu show={showMenu} options={options} toggleShow={() => setShowMenu(!showMenu)} />
+                    </>
+                }
             </div>
         </div >
     )
