@@ -1,7 +1,7 @@
 import NotificationTrigger from "./NotificationTrigger"
 
 export default class Sensor {
-    id?: string
+    id: string
     name: string
     type: 'ANALOGIC' | 'DIGITAL' | 'BMP280'
     port: object
