@@ -1,8 +1,10 @@
 import axios from "axios";
-const token = JSON.parse(<string>window.sessionStorage.getItem('token'))
+
+const jsonToken = await window.sessionStorage.getItem('token')
+const token = JSON.parse(<string>jsonToken)
 
 const client = axios.create({
-    headers: { 'Authorization': token }
+    headers: { 'Authorization': "" + token }
 });
 
 export default client;
