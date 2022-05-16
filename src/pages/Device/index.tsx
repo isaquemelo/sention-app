@@ -48,7 +48,7 @@ export default function Device() {
 
     return (
         <div className="device">
-            <ShortHeader title={device?.accessCode ?? ""} icon={<DeviceIcon />} options={[{
+            <ShortHeader title={device ? device.name ?? device.accessCode : "Loading..."} icon={<DeviceIcon />} options={[{
                 label: "Delete device", onClick: () => {
                     removeDevice()
                 }

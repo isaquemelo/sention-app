@@ -55,7 +55,7 @@ export default function Device() {
                             devices?.map(device => {
                                 return <ListItem
                                     key={device.id}
-                                    label={device.accessCode}
+                                    label={device.name ?? device.accessCode}
                                     options={[{
                                         label: "Delete device", onClick: () => {
                                             removeDevice(device.id)
