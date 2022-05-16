@@ -53,21 +53,21 @@ export default function Sensors() {
                             devices?.map(device => {
                                 const shouldBeRendered = (device.sensors.length >= 1)
                                 return shouldBeRendered && (
-                                    <>
+                                    <div key={device.id}>
                                         <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
 
                                         <div className="list-sensors">
                                             {/* <Typography className="sensor-name" type="body" size="m">Sensors</Typography> */}
                                             <ListSensors sensors={device.sensors} />
                                         </div>
-                                    </>
+                                    </div>
                                 )
                             })
                         }
 
                         {isLoading &&
-                            skeletonArray.map(({ value, index }) => {
-                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            skeletonArray.map(({ value }, index) => {
+                                return <ListItem key={index} label={""} isSkeleton={true} />
                             })
                         }
                     </div>

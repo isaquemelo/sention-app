@@ -39,21 +39,21 @@ export default function Actuators() {
                             devices?.map(device => {
                                 const shouldBeRendered = (device.actuators.length >= 1)
                                 return shouldBeRendered && (
-                                    <>
+                                    <div key={device.id}>
                                         <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
 
                                         <div className="list-actuators">
                                             {/* <Typography className="sensor-name" type="body" size="m">Actuators</Typography> */}
                                             <ListActuators actuators={device.actuators} />
                                         </div>
-                                    </>
+                                    </div>
                                 )
                             })
                         }
 
                         {isLoading &&
-                            skeletonArray.map(({ value, index }) => {
-                                return <ListItem key={index} label={index} isSkeleton={true} />
+                            skeletonArray.map(({ value }, index) => {
+                                return <ListItem key={"key" + index} label={""} isSkeleton={true} />
                             })
                         }
                     </div>
