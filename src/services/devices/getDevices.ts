@@ -7,8 +7,6 @@ export function getDevices(userId: string): Promise<Device[]> {
         devices: Device[],
     }
 
-    console.log("getDevices", client.defaults)
-
     return client.get(resources.GET_USER + `/${userId}`).then(({ data }: { data: Data }) => {
         return data.devices;
     });
