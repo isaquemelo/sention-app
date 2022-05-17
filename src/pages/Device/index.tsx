@@ -98,7 +98,7 @@ export default function Device() {
                 <FloatingButton options={[
                     {
                         label: 'Add new sensor',
-                        onClick: () => navigate('sensor')
+                        onClick: () => navigate(`/sensors/create/${deviceId}`)
                     },
 
                     {

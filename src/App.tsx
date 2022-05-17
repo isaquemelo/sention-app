@@ -7,6 +7,7 @@ import AuthRoute from './components/AuthRoute'
 
 import InjectLayoutElements from './components/InjectLayoutElements'
 import Actuators from './pages/Actuators'
+import CreateSensor from './pages/CreateSensor'
 import Device from './pages/Device'
 import Devices from './pages/Devices'
 import DeviceSetup from './pages/DeviceSetup'
@@ -51,6 +52,12 @@ function App() {
         <Route path="/sensors" element={
           <AuthRoute>
             <InjectLayoutElements element={<Sensors />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/sensors/create/:deviceId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<CreateSensor />} />
           </AuthRoute>
         } />
 

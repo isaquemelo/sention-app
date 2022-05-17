@@ -1,23 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { ReactComponent as TemperatureIcon } from '@images/sensor-icons/temperature.svg';
-import { ReactComponent as LightSensor } from '@images/sensor-icons/light.svg';
-// import sentionLogo from "@images/sention-logo.svg";
-// import Button from "../../components/Button";
-// import TextField from "../../components/TextField";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import "./style.scss";
-import Button from "../../components/Button";
+
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
 import FloatingButton from "../../components/FloatingButton";
 import { deleteDevice } from "../../services/devices/deleteDevice";
 import ShortHeader from "../../components/ShortHeader";
 import ListSensors from "../../components/ListSensors";
-import ListActuators from "../../components/ListActuators";
 
 export default function Sensors() {
     const navigate = useNavigate();

@@ -17,10 +17,19 @@
 
     &--icon {
         margin-right: 15px;
+
+        svg * {
+            stroke: white;
+        }
     }
 
     .right, .left {
         display: flex;
         align-items: center;
+
+        > * {
+            display: flex;
+            align-items: center;
+        }
     }
 }
