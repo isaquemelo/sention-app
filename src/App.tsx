@@ -3,18 +3,20 @@ import {
   Route,
   Routes
 } from 'react-router-dom'
-import AuthRoute from './components/AuthRoute'
 
+import AuthRoute from './components/AuthRoute'
 import InjectLayoutElements from './components/InjectLayoutElements'
+
 import Actuators from './pages/Actuators'
+import CreateActuator from './pages/CreateActuator'
 import CreateSensor from './pages/CreateSensor'
 import Device from './pages/Device'
 import Devices from './pages/Devices'
 import DeviceSetup from './pages/DeviceSetup'
+import Sensors from './pages/Sensors'
 
 import Login from './pages/Login'
 import Logout from './pages/Logout'
-import Sensors from './pages/Sensors'
 
 function App() {
 
@@ -64,6 +66,12 @@ function App() {
         <Route path="/actuators" element={
           <AuthRoute>
             <InjectLayoutElements element={<Actuators />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/actuators/create/:deviceId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<CreateActuator />} />
           </AuthRoute>
         } />
 

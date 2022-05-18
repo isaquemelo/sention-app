@@ -36,7 +36,7 @@ export default function CreateSensor({ }: Props) {
     const Icon: any = sensorIcon
 
     return (
-        <div className="sensor">
+        <div className="create-sensor">
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">

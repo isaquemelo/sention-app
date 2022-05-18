@@ -1,16 +1,3 @@
-.device{
-    display: flex;
-    flex-direction: column;
+.create-sensor{
 
-    &-list {
-        
-    }
-
-    .no-results {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-        height: calc(100vh - 400px);
-    }
 }

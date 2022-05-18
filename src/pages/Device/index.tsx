@@ -103,7 +103,7 @@ export default function Device() {
 
                     {
                         label: 'Add new actuator',
-                        onClick: () => navigate('actuator')
+                        onClick: () => navigate('/actuators/create/${deviceId}')
                     },
                 ]} />
 
