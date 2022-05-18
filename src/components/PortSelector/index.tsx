@@ -25,7 +25,7 @@ export default function PortSelector({ acceptedPorts, usedPorts, label, value, i
 
                     return (
                         <li key={acceptedPort} className={`ports-port ${isUsed ? 'ports-port--used' : ''} ${value === acceptedPort ? 'ports-port--selected' : ''}`}>
-                            <button type="button" onClick={() => onChange(acceptedPort)}>{acceptedPort}</button>
+                            <button disabled={isUsed} type="button" onClick={() => onChange(acceptedPort)}>{acceptedPort}</button>
                         </li>
                     )
                 })}
