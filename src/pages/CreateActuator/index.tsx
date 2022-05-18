@@ -11,8 +11,7 @@ import ShortHeader from "../../components/ShortHeader";
 
 import { default as SensorType } from "../../types/Sensor";
 import { getDevice } from "../../services/devices/getDevice";
-import SensorForm from "../../components/SensorForm";
-import buildSensorIcon from "../../builders/buildSensorIcon";
+import ActuatorForm from "../../components/ActuatorForm";
 
 type Props = {
 
@@ -29,7 +28,7 @@ export default function CreateActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {device && <SensorForm updateIcon={() => { }} device={device} />}
+                {device && <ActuatorForm device={device} />}
             </div>
 
         </div>
