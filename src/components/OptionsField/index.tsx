@@ -22,8 +22,6 @@ function OptionsField({ label, value, isError, onChange, onBlur, options }: Prop
             return onChange(ev.target.value)
     }
 
-    console.log("value", value)
-
     return (
         <div className={`options-field ${isError ? "options-field--error" : ""}`}>
             <label>

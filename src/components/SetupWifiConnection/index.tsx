@@ -41,8 +41,6 @@ export default function SetupWifiConnection({ nextStep }: Props) {
             }
         }
 
-        console.log("data", data)
-
         axios.post(`http://192.168.4.1/credentials`, data).then(() => {
             setError(false);
             axios.post(`http://192.168.4.1/reboot`, data, { timeout: 5000 })
