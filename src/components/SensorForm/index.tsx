@@ -118,6 +118,7 @@ export default function SensorForm({ updateIcon, device }: Props) {
                     {sensorSchema.port.meta?.map(port => {
                         return (
                             <Controller
+                                key={port.id}
                                 rules={{ required: true, minLength: 1 }}
                                 control={control}
                                 name={`port-${port.id}`}
@@ -145,13 +146,15 @@ export default function SensorForm({ updateIcon, device }: Props) {
                     name="port"
                     defaultValue={""}
                     rules={{ required: true, minLength: 1 }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                         <PortSelector
                             value={value}
                             onChange={onChange}
                             label={`Port`}
                             acceptedPorts={supportedPorts}
-                            usedPorts={usedPorts} />
+                            usedPorts={usedPorts}
+                            isError={error ? true : false}
+                        />
                     )}
                 />
             )}
