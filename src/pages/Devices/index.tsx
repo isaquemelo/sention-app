@@ -48,8 +48,6 @@ export default function Device() {
 
             <div className="devices">
                 <div className="container page">
-                    <Typography type="title" size="l"></Typography>
-
                     <div className="devices-list">
                         {!isLoading &&
                             devices?.map(device => {

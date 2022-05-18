@@ -1,0 +1,59 @@
+.port-selector {
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    margin-bottom: 30px;
+
+    label {
+        position: relative;
+
+        span {
+            width: 150px;
+            position: absolute;
+            left: 10px;
+            top: -0.8em;
+            font-size: 13px;
+            text-shadow: 3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+            padding: 0 5px;
+        }
+    }
+
+    .ports {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-gap: 15px;
+        padding: 17px;
+
+        list-style: none;
+        margin: 0;
+
+        
+        &-port {
+            display: flex;
+
+            button {
+                flex: 1;
+                text-align: center;
+                border: 2px dashed var(--primary-color);
+                border-radius: 4px;
+                padding: 15px 0;
+            }
+
+            &--used {
+                opacity: 0.2;
+                
+                button {
+                    cursor: not-allowed;
+                    border: 2px solid grey;
+                }
+            }
+
+            &--selected {
+                button {
+                    border: 2px solid var(--primary-color);
+                }
+            }
+
+            
+        }
+    }
+}

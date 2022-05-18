@@ -20,7 +20,8 @@ const sensorSchemas = [
                 },
             ],
 
-            'supportedPorts': pins.ADC_PINS
+            // 'supportedPorts': pins.ADC_PINS
+            'supportedPorts': [22, 21]
         }
     },
 
@@ -35,12 +36,12 @@ const sensorSchemas = [
 
     {
         'id': `DIGITAL`,
-        'label': 'Generic analogic reading',
+        'label': 'Digital reading',
         'port': {
             'multiplePort': false,
             'supportedPorts': pins.ADC_PINS
         }
     }
-] as const
+]
 
 export default sensorSchemas;

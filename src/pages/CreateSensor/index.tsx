@@ -27,7 +27,7 @@ export default function CreateSensor({ }: Props) {
     const queryClient = useQueryClient()
     const navigate = useNavigate();
 
-    const [sensorIcon, setSensorIcon] = useState<React.FunctionComponent>(UnknownTypeIcon)
+    const [sensorIcon, setSensorIcon] = useState<any>(UnknownTypeIcon)
 
     // const { mutate: removeDevice } = useMutation(
     //     () => {
@@ -44,19 +44,19 @@ export default function CreateSensor({ }: Props) {
 
     const updateSensorIcon = (sensorType: SensorType['type']) => {
         if (sensorType) {
-            const Icon = buildSensorIcon(sensorType)
-            setSensorIcon(Icon)
+            const FunctionComponent = buildSensorIcon(sensorType)
+            setSensorIcon(<FunctionComponent />)
         }
     }
 
-    const Icon: React.FunctionComponent = sensorIcon
+    const Icon: any = sensorIcon
 
     return (
         <div className="sensor">
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                <SensorForm updateIcon={updateSensorIcon} />
+                {device && <SensorForm updateIcon={updateSensorIcon} device={device} />}
 
                 <FloatingButton options={[
                     {

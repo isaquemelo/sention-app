@@ -39,8 +39,6 @@ export default function Sensors() {
 
             <div className="sensors">
                 <div className="container page">
-                    <Typography type="title" size="l"></Typography>
-
                     <div className="sensors-list">
                         {!isLoading &&
                             devices?.map(device => {

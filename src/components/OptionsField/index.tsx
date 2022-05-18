@@ -29,11 +29,10 @@ function OptionsField({ label, value, isError, onChange, onBlur, options }: Prop
             <label>
                 <span>{label}</span>
                 <select onChange={handleOnChange} value={value}>
+                    {!value && <option value=""></option>}
                     {options?.map(({ value, label, key }) => {
                         return <option key={key} value={value}>{label}</option>
                     })}
-
-                    {!value && <option value=""></option>}
                 </select>
             </label>
         </div>

@@ -1,7 +1,10 @@
 import { createRef, useEffect } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import sensorsToUsedPorts from "../../adapters/sensorsToUsedPorts";
 import sensorSchemas from "../../constants/sensorSchemas";
+import Device from "../../types/Device";
 import OptionsField from "../OptionsField";
+import PortSelector from "../PortSelector";
 import TextField from "../TextField";
 import "./style.scss";
 
@@ -9,10 +12,11 @@ type changeFunction = (text: any) => void
 
 
 type Props = {
-    updateIcon?: changeFunction
+    updateIcon?: changeFunction,
+    device: Device,
 }
 
-export default function SensorForm({ updateIcon }: Props) {
+export default function SensorForm({ updateIcon, device }: Props) {
     const { register, handleSubmit, watch, formState: { errors }, control, } = useForm();
 
     const onSubmit = data => console.log(data);
@@ -30,6 +34,10 @@ export default function SensorForm({ updateIcon }: Props) {
             key: id,
         }
     })
+
+    const sensorSchema = sensorSchemas.find(({ id }) => id === watchType)
+    const supportedPorts = sensorSchema ? sensorSchema.port.supportedPorts : []
+    const usedPorts = sensorsToUsedPorts(device.sensors)
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -62,8 +70,45 @@ export default function SensorForm({ updateIcon }: Props) {
                 )}
             />
 
+            {/* Multiple port sensor type */}
+            {sensorSchema && sensorSchema.port.multiplePort && (
+                <>
+                    {sensorSchema.port.meta?.map(port => {
+                        return (
+                            <Controller
+                                control={control}
+                                name={`port-${port.id}`}
+                                defaultValue={""}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <PortSelector
+                                        value={value}
+                                        onChange={onChange}
+                                        label={`Port ${port.label}`}
+                                        acceptedPorts={supportedPorts}
+                                        usedPorts={usedPorts} />
+                                )}
+                            />
+                        )
+                    })}
+                </>
+            )}
 
-
+            {/* Single port sensor type */}
+            {sensorSchema && !sensorSchema.port.multiplePort && (
+                <Controller
+                    control={control}
+                    name="port"
+                    defaultValue={""}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                        <PortSelector
+                            value={value}
+                            onChange={onChange}
+                            label={`Port`}
+                            acceptedPorts={supportedPorts}
+                            usedPorts={usedPorts} />
+                    )}
+                />
+            )}
         </form>
     )
 }

@@ -32,8 +32,6 @@ export default function Actuators() {
 
             <div className="actuators">
                 <div className="container page">
-                    <Typography type="title" size="l"></Typography>
-
                     <div className="actuators-list">
                         {!isLoading &&
                             devices?.map(device => {
