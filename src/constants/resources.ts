@@ -9,6 +9,7 @@ const resources = {
 
     'DELETE_DEVICE': `${urls.SENTION_API_BASE}/user/devices/dissociate/$deviceId`,
     'DELETE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId`,
+    'DELETE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId`,
 
     'CREATE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/sensors`,
     'CREATE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/actuators`,

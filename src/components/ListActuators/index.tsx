@@ -1,4 +1,6 @@
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { deleteActuator } from "../../services/actuators/deleteActuator";
 import Actuator from "../../types/Actuator";
 
 import ListItem from "../ListItem";
@@ -9,11 +11,23 @@ type Props = {
 
 export default function ListActuators({ actuators }: Props) {
     const navigate = useNavigate();
+    const queryClient = useQueryClient()
+
+    const { mutate: removeActuator } = useMutation(
+        (actuatorId: string) => {
+            return deleteActuator(actuatorId)
+        },
+        {
+            onSuccess: async () => {
+                await queryClient.invalidateQueries("device");
+            }
+        }
+    );
 
     return (
         <>
             {
-                actuators.map(({ id, name }) => {
+                actuators.map(({ id = "", name }) => {
                     return <ListItem
                         key={id}
                         label={name}
@@ -28,7 +42,7 @@ export default function ListActuators({ actuators }: Props) {
                                 label: "Delete actuator",
                                 onClick: () => {
                                     // Trigger device mutation
-                                    console.log("Delete actuator")
+                                    removeActuator(id)
                                 }
                             }]}
                         onItemClick={
