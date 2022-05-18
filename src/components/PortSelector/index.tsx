@@ -7,13 +7,14 @@ type Props = {
     usedPorts: number[],
     label: string,
     value: number,
+    isError?: boolean,
     onChange: onChangeFunction,
 }
 
 
-export default function PortSelector({ acceptedPorts, usedPorts, label, value, onChange }: Props) {
+export default function PortSelector({ acceptedPorts, usedPorts, label, value, isError, onChange }: Props) {
     return (
-        <div className="port-selector">
+        <div className={`port-selector ${isError ? "port-selector--error" : ""}`}>
             <label>
                 <span>{label}</span>
             </label>

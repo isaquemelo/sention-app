@@ -78,17 +78,19 @@ export default function SensorForm({ updateIcon, device }: Props) {
     const usedPorts = sensorsToUsedPorts(device.sensors)
 
     return (
-        <form>
+        <form onSubmit={handleSubmit(data => newSensor())}>
             <Controller
                 control={control}
                 name="name"
+                rules={{ required: true, minLength: 5 }}
                 defaultValue={""}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
+                render={({ field: { onChange, onBlur, value, ref, }, fieldState: { error } }) => (
                     <TextField
                         label="Name"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
+                        isError={error ? true : false}
                     />
                 )}
             />
@@ -96,14 +98,16 @@ export default function SensorForm({ updateIcon, device }: Props) {
             <Controller
                 control={control}
                 name="type"
+                rules={{ required: true, minLength: 1 }}
                 defaultValue={""}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
+                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Type"
                         options={sensorOptions}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
+                        isError={error ? true : false}
                     />
                 )}
             />
@@ -114,16 +118,19 @@ export default function SensorForm({ updateIcon, device }: Props) {
                     {sensorSchema.port.meta?.map(port => {
                         return (
                             <Controller
+                                rules={{ required: true, minLength: 1 }}
                                 control={control}
                                 name={`port-${port.id}`}
                                 defaultValue={""}
-                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                                     <PortSelector
                                         value={value}
                                         onChange={onChange}
                                         label={`Port ${port.label}`}
                                         acceptedPorts={supportedPorts}
-                                        usedPorts={usedPorts} />
+                                        usedPorts={usedPorts}
+                                        isError={error ? true : false}
+                                    />
                                 )}
                             />
                         )
@@ -137,6 +144,7 @@ export default function SensorForm({ updateIcon, device }: Props) {
                     control={control}
                     name="port"
                     defaultValue={""}
+                    rules={{ required: true, minLength: 1 }}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
                         <PortSelector
                             value={value}
@@ -148,12 +156,14 @@ export default function SensorForm({ updateIcon, device }: Props) {
                 />
             )}
 
-            <FloatingButton options={[
-                {
-                    label: 'Save sensor',
-                    onClick: newSensor
-                },
-            ]} icon={SaveFloatingIcon} />
+            <button>
+                <FloatingButton options={[
+                    {
+                        label: 'Save sensor',
+                        onClick: () => { }
+                    },
+                ]} icon={SaveFloatingIcon} />
+            </button>
         </form>
     )
 }
