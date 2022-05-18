@@ -1,10 +1,15 @@
+import Actuator from "../types/Actuator";
+import Device from "../types/Device";
 import Sensor from "../types/Sensor";
 
-export default function sensorsToUsedPorts(sensors: Sensor[]): number[] {
+export default function deviceToUsedPorts(device: Device): number[] {
     const usedPorts: number[] = []
 
-    sensors.forEach(sensor => {
-        const ports = sensor.port
+    const sensors = device.sensors;
+    const actuators = device.actuators;
+
+    const addPortsToUsedPorts = (entity: Sensor | Actuator) => {
+        const ports = entity.port
         const portsType = typeof ports
 
         // Multiple port sensor type
@@ -17,7 +22,10 @@ export default function sensorsToUsedPorts(sensors: Sensor[]): number[] {
             usedPorts.push(parseInt(<string>ports))
         }
 
-    })
+    }
+
+    sensors.forEach(addPortsToUsedPorts)
+    actuators.forEach(addPortsToUsedPorts)
 
     return usedPorts
 }

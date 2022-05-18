@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 import sensorSchemas from "../../constants/sensorSchemas";
-import sensorsToUsedPorts from "../../adapters/sensorsToUsedPorts";
+import deviceToUsedPorts from "../../adapters/deviceToUsedPorts";
 import Device from "../../types/Device";
 import Sensor from "../../types/Sensor";
 import FloatingButton from "../FloatingButton";
@@ -75,7 +75,7 @@ export default function SensorForm({ updateIcon, device }: Props) {
 
     const sensorSchema = sensorSchemas.find(({ id }) => id === type)
     const supportedPorts = sensorSchema ? sensorSchema.port.supportedPorts : []
-    const usedPorts = sensorsToUsedPorts(device.sensors)
+    const usedPorts = deviceToUsedPorts(device)
 
     return (
         <form onSubmit={handleSubmit(data => newSensor())}>
