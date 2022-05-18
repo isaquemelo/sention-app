@@ -64,12 +64,12 @@ export default function Sensors() {
                     </div>
                 </div>
 
-                <FloatingButton options={[
+                {/* <FloatingButton options={[
                     {
                         label: 'Associate new device',
                         onClick: () => navigate('setup-device')
                     },
-                ]} />
+                ]} /> */}
 
             </div>
         </>

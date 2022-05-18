@@ -1,17 +1,15 @@
-import { ReactChild, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
 
 
 import "./style.scss";
 
-import FloatingButton from "../../components/FloatingButton";
 import ShortHeader from "../../components/ShortHeader";
 
 import { default as SensorType } from "../../types/Sensor";
-import { getSensor } from "../../services/sensors/getSensor";
 import { getDevice } from "../../services/devices/getDevice";
 import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
@@ -24,22 +22,8 @@ export default function CreateSensor({ }: Props) {
     const { deviceId = "" } = useParams();
     const { isLoading, data: device } = useQuery(["device", deviceId], () => getDevice(deviceId))
 
-    const queryClient = useQueryClient()
-    const navigate = useNavigate();
-
     const [sensorIcon, setSensorIcon] = useState<any>(UnknownTypeIcon)
 
-    // const { mutate: removeDevice } = useMutation(
-    //     () => {
-    //         return deleteDevice(deviceId)
-    //     },
-    //     {
-    //         onSuccess: async () => {
-    //             await queryClient.invalidateQueries("devices");
-    //             navigate('../devices')
-    //         }
-    //     }
-    // );
     const pageTitle = "New sensor" // || the sensor name create
 
     const updateSensorIcon = (sensorType: SensorType['type']) => {
@@ -57,18 +41,6 @@ export default function CreateSensor({ }: Props) {
 
             <div className="container page">
                 {device && <SensorForm updateIcon={updateSensorIcon} device={device} />}
-
-                <FloatingButton options={[
-                    {
-                        label: 'Add new sensor',
-                        onClick: () => navigate('sensor')
-                    },
-
-                    {
-                        label: 'Add new actuator',
-                        onClick: () => navigate('actuator')
-                    },
-                ]} />
             </div>
 
         </div>

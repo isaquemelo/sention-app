@@ -46,7 +46,7 @@ export default function ListSensors({ sensors }: Props) {
                                 label: "Delete sensor",
                                 onClick: () => {
                                     // Trigger device mutation
-                                    removeSensor(sensor.id)
+                                    removeSensor(sensor.id ?? "")
                                 }
                             }]}
                         onItemClick={

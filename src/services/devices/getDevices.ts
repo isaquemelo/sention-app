@@ -7,7 +7,7 @@ export function getDevices(userId: string): Promise<Device[]> {
         devices: Device[],
     }
 
-    return client.get(resources.GET_USER + `/${userId}`).then(({ data }: { data: Data }) => {
+    return client.get(resources.GET_USER.replace('$userId', userId)).then(({ data }: { data: Data }) => {
         return data.devices;
     });
 }

@@ -1,11 +1,20 @@
-import { createRef, useEffect } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import sensorsToUsedPorts from "../../adapters/sensorsToUsedPorts";
+import { useEffect } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+
 import sensorSchemas from "../../constants/sensorSchemas";
+import sensorsToUsedPorts from "../../adapters/sensorsToUsedPorts";
 import Device from "../../types/Device";
+import Sensor from "../../types/Sensor";
+import FloatingButton from "../FloatingButton";
 import OptionsField from "../OptionsField";
 import PortSelector from "../PortSelector";
 import TextField from "../TextField";
+import { createSensor } from "../../services/sensors/createSensor";
+
+import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
+
 import "./style.scss";
 
 type changeFunction = (text: any) => void
@@ -17,15 +26,44 @@ type Props = {
 }
 
 export default function SensorForm({ updateIcon, device }: Props) {
-    const { register, handleSubmit, watch, formState: { errors }, control, } = useForm();
+    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
+    const navigate = useNavigate();
 
-    const onSubmit = data => console.log(data);
-    const watchType = watch("type");
+    const type = watch("type");
+    const name = watch("name");
+    const port = watch("port");
+
+    const queryClient = useQueryClient()
+
+    const { mutate: newSensor } = useMutation(
+        () => {
+            const isMultiplePort = sensorSchema?.port.multiplePort ?? false
+            const multiplePorts: any = {}
+
+            if (sensorSchema && sensorSchema.port.meta && isMultiplePort) {
+                sensorSchema.port.meta.forEach(({ id }) => {
+                    multiplePorts[id] = getValues(`port-${id}`);
+                })
+            }
+
+            return createSensor(device.id, new Sensor({
+                name,
+                port: isMultiplePort ? multiplePorts : port,
+                type,
+            }))
+        },
+        {
+            onSuccess: async () => {
+                await queryClient.invalidateQueries(["device", device.id]);
+                navigate(`/devices/${device.id}`)
+            }
+        }
+    );
 
     useEffect(() => {
         if (updateIcon)
-            updateIcon(watchType)
-    }, [watchType]);
+            updateIcon(type)
+    }, [type]);
 
     const sensorOptions = sensorSchemas.map(({ id, label }) => {
         return {
@@ -35,12 +73,12 @@ export default function SensorForm({ updateIcon, device }: Props) {
         }
     })
 
-    const sensorSchema = sensorSchemas.find(({ id }) => id === watchType)
+    const sensorSchema = sensorSchemas.find(({ id }) => id === type)
     const supportedPorts = sensorSchema ? sensorSchema.port.supportedPorts : []
     const usedPorts = sensorsToUsedPorts(device.sensors)
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
             <Controller
                 control={control}
                 name="name"
@@ -109,6 +147,13 @@ export default function SensorForm({ updateIcon, device }: Props) {
                     )}
                 />
             )}
+
+            <FloatingButton options={[
+                {
+                    label: 'Save sensor',
+                    onClick: newSensor
+                },
+            ]} icon={SaveFloatingIcon} />
         </form>
     )
 }

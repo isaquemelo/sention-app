@@ -4,7 +4,7 @@ import Sensor from "../../types/Sensor";
 
 
 export function getSensor(sensorId: string): Promise<Sensor> {
-    return client.get(resources.GET_SENSOR + `/${sensorId}`).then(({ data: sensor }: { data: Sensor }) => {
+    return client.get(resources.GET_SENSOR.replace('$sensorId', sensorId)).then(({ data: sensor }: { data: Sensor }) => {
         return sensor;
     });
 }

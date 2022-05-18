@@ -5,10 +5,10 @@ const allTypes = sensorSchemas.map(schema => schema.id)[0]
 type types = typeof allTypes
 
 export default class Sensor {
-    id: string
+    id?: string
     name: string
     type: types
-    port: object | string
+    port: object | string | number
     notificationTriggers?: NotificationTrigger[]
     createdAt?: Date
     updatedAt?: Date
