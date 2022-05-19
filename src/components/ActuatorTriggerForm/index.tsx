@@ -38,6 +38,7 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
     const name = watch("name");
     const action = watch("action");
     const targetSensor = watch("sensor");
+    const dataSource = watch("dataSource");
     const operator = watch("operator");
     const limitValue = watch("value");
     const description = watch("description");
@@ -54,6 +55,7 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 logicOperator: operator,
                 value: parseInt(limitValue),
                 description: description,
+                dataSource: isMultiplePortSensor ? dataSource : undefined
             }))
         },
         {
@@ -87,6 +89,19 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
             key: id,
         }
     })
+
+    const selectedSensorInstance = sensors.find(sensor => sensor.id === targetSensor)
+
+    const sensorSchema = selectedSensorInstance ? sensorSchemas.find(schema => schema.id === selectedSensorInstance.type) : false
+    const isMultiplePortSensor = sensorSchema && sensorSchema.port.multiplePort
+    const sensorSourceOptions = isMultiplePortSensor && sensorSchema.port.sources ? sensorSchema.port.sources.map(({ id, label }) => {
+        return {
+            value: id,
+            label: label,
+            key: id
+        }
+    }) : []
+
 
     return (
         <form onSubmit={handleSubmit(() => newActuatorTrigger())}>
@@ -139,6 +154,25 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                     />
                 )}
             />
+
+            {isMultiplePortSensor && <Controller
+                control={control}
+                name="dataSource"
+                rules={{ required: true, minLength: 1 }}
+                defaultValue={""}
+                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
+                    <OptionsField
+                        label="Sensor data source"
+                        options={sensorSourceOptions}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        isError={error ? true : false}
+                    />
+                )}
+            />}
+
+
 
             <Controller
                 control={control}

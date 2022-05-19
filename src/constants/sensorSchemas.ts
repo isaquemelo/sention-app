@@ -6,6 +6,21 @@ const sensorSchemas = [
         'label': 'BMP280',
         'port': {
             'multiplePort': true,
+            'sources': [
+                {
+                    'id': 'TEMPERATURE',
+                    'label': 'Temperature'
+                },
+
+                {
+                    'id': 'PRESSURE',
+                    'label': 'Air pressure'
+                },
+                {
+                    'id': 'ALTITUDE',
+                    'label': 'Altitude'
+                },
+            ],
             'meta': [
                 {
                     'id': 'SDA',
