@@ -6,13 +6,16 @@ const resources = {
     'GET_USER': `${urls.SENTION_API_BASE}/user/$userId`,
     'GET_DEVICE': `${urls.SENTION_API_BASE}/user/devices/$deviceId`,
     'GET_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId`,
+    'GET_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId`,
 
     'DELETE_DEVICE': `${urls.SENTION_API_BASE}/user/devices/dissociate/$deviceId`,
     'DELETE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId`,
     'DELETE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId`,
+    'DELETE_ACTUATOR_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/actuators/trigger/$triggerId`,
 
     'CREATE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/sensors`,
     'CREATE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/actuators`,
+    'CREATE_ACTUATOR_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId/trigger`,
 }
 
 export default resources;

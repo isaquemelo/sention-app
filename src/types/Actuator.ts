@@ -5,6 +5,7 @@ export default class Actuator {
     name: string
     type: string
     port: number
+    deviceId?: string
     triggers?: ActuatorTrigger[]
     createdAt?: Date
 

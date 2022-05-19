@@ -17,6 +17,7 @@ import Sensors from './pages/Sensors'
 
 import Login from './pages/Login'
 import Logout from './pages/Logout'
+import CreateActuatorTrigger from './pages/CreateActuatorTrigger'
 
 function App() {
 
@@ -72,6 +73,12 @@ function App() {
         <Route path="/actuators/create/:deviceId" element={
           <AuthRoute>
             <InjectLayoutElements element={<CreateActuator />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/actuators/:actuatorId/trigger/create" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<CreateActuatorTrigger />} />
           </AuthRoute>
         } />
 

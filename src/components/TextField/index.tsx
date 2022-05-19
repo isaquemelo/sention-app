@@ -4,18 +4,19 @@ import "./style.scss";
 type onChangeFunction = (text: string) => void
 
 type Props = {
-    type?: "text" | "password",
+    type?: "text" | "password" | "number",
     label: string,
     placeholder?: string,
     isError?: boolean,
     autocomplete?: boolean,
+    multiline?: boolean,
     onChange?: onChangeFunction,
     onBlur?: any,
     value?: string,
 }
 
-function TextField({ type = "text", label, value, placeholder, autocomplete = true, isError, onChange, onBlur }: Props) {
-    const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+function TextField({ type = "text", label, value, placeholder, autocomplete = true, multiline = false, isError, onChange, onBlur }: Props) {
+    const handleOnChange = (ev: any) => {
         if (onChange)
             return onChange(ev.target.value)
     }
@@ -24,7 +25,9 @@ function TextField({ type = "text", label, value, placeholder, autocomplete = tr
         <div className={`textfield ${isError ? "textfield--error" : ""}`}>
             <label>
                 <span>{label}</span>
-                <input value={value} type={type} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required autoComplete={autocomplete ? "on" : "false"} />
+                {!multiline && <input value={value} type={type} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required autoComplete={autocomplete ? "on" : "false"} />}
+                {multiline && <textarea value={value} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required autoComplete={autocomplete ? "on" : "false"} />}
+
             </label>
         </div>
     );
