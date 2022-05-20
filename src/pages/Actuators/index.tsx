@@ -7,14 +7,14 @@ import { ReactComponent as LightSensor } from '@images/sensor-icons/light.svg';
 // import TextField from "../../components/TextField";
 
 import "./style.scss";
-import Button from "../../components/Button";
+
+import { ReactComponent as EditIcon } from '@images/edit.svg';
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { getDevices } from "../../services/devices/getDevices";
 import useSessionStorage from "../../hooks/useLocalStorage";
 import FloatingButton from "../../components/FloatingButton";
-import { deleteDevice } from "../../services/devices/deleteDevice";
 import ShortHeader from "../../components/ShortHeader";
 import ListActuators from "../../components/ListActuators";
 
@@ -38,7 +38,12 @@ export default function Actuators() {
                                 const shouldBeRendered = (device.actuators.length >= 1)
                                 return shouldBeRendered && (
                                     <div key={device.id}>
-                                        <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
+                                        <div className="heading">
+                                            <Typography className="device-name" type="title" size="l">{device.name ?? device.accessCode}</Typography>
+                                            <button onClick={() => navigate(`/devices/${device.id}`)}>
+                                                <EditIcon />
+                                            </button>
+                                        </div>
 
                                         <div className="list-actuators">
                                             {/* <Typography className="sensor-name" type="body" size="m">Actuators</Typography> */}

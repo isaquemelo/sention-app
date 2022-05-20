@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import "./style.scss";
 
+import { ReactComponent as EditIcon } from '@images/edit.svg';
 import ListItem from "../../components/ListItem";
 import Typography from "../../components/Typography";
 import { getDevices } from "../../services/devices/getDevices";
@@ -19,6 +20,7 @@ export default function Sensors() {
     const { isLoading, data: devices } = useQuery("devices", () => getDevices(userId))
 
     const queryClient = useQueryClient()
+    const navigator = useNavigate()
 
     const { mutate: removeDevice } = useMutation(
         (deviceId: string) => {
@@ -45,7 +47,12 @@ export default function Sensors() {
                                 const shouldBeRendered = (device.sensors.length >= 1)
                                 return shouldBeRendered && (
                                     <div key={device.id}>
-                                        <Typography className="device-name" type="title" size="l">{device.accessCode}</Typography>
+                                        <div className="heading">
+                                            <Typography className="device-name" type="title" size="l">{device.name ?? device.accessCode}</Typography>
+                                            <button onClick={() => navigator(`/devices/${device.id}`)}>
+                                                <EditIcon />
+                                            </button>
+                                        </div>
 
                                         <div className="list-sensors">
                                             {/* <Typography className="sensor-name" type="body" size="m">Sensors</Typography> */}

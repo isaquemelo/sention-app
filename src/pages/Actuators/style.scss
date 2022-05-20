@@ -1,9 +1,18 @@
-.devices{
+.actuators{
     display: flex;
     align-items: center;
     justify-content: center;
 
     &-list {
-        
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            
+            h1 {
+                margin-bottom: 0;
+            }
+        }
     }
 }

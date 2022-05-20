@@ -4,8 +4,15 @@
     justify-content: center;
 
     &-list {
-        h1.device-name {
-            // margin-bottom: 0px;
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            
+            h1 {
+                margin-bottom: 0;
+            }
         }
 
         .sensor-name {
