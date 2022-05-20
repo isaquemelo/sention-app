@@ -16,6 +16,7 @@ const resources = {
     'CREATE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/sensors`,
     'CREATE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/actuators`,
     'CREATE_ACTUATOR_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId/trigger`,
+    'CREATE_NOTIFICATION_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId/notificationTrigger`,
 }
 
 export default resources;

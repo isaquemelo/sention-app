@@ -19,60 +19,49 @@ import "./style.scss";
 import Sensor from "../../types/Sensor";
 import actions from "../../constants/actuatorActions";
 import logicOperators from "../../constants/logicOperators";
-import ActuatorTrigger from "../../types/ActuatorTrigger";
-import { createTrigger } from "../../services/actuatorTrigger/createTrigger";
+import { createNotificationTrigger } from "../../services/notificationTrigger/createNotificationTrigger";
+import NotificationTrigger from "../../types/NotificationTrigger";
 
 
 type changeFunction = (text: any) => void
 
 
 type Props = {
-    actuator: Actuator,
-    sensors: Sensor[]
+    sensor: Sensor
 }
 
-export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
+export default function NotificationTriggerForm({ sensor }: Props) {
     const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
     const navigate = useNavigate();
 
     const name = watch("name");
-    const action = watch("action");
-    const targetSensor = watch("sensor");
     const dataSource = watch("dataSource");
     const operator = watch("operator");
     const limitValue = watch("value");
-    const description = watch("description");
+    const content = watch("content");
 
 
     const queryClient = useQueryClient()
 
-    const { mutate: newActuatorTrigger } = useMutation(
+    const { mutate: newNotificationTrigger } = useMutation(
         () => {
-            return createTrigger(actuator.id!, new ActuatorTrigger({
+            return createNotificationTrigger(sensor.id!, new NotificationTrigger({
                 name,
-                action,
-                sensorId: targetSensor,
+                type: "EMAIL",
                 logicOperator: operator,
                 value: parseInt(limitValue),
-                description: description,
+                content,
                 dataSource: isMultiplePortSensor ? dataSource : undefined
             }))
         },
         {
             onSuccess: async () => {
-                await queryClient.invalidateQueries(["actuator", actuator.id]);
-                navigate(`/devices/${actuator.deviceId}`)
+                await queryClient.invalidateQueries(["sensor", sensor.id]);
+                // navigate(`/sensors/${sensor.id}`)
             }
         }
     );
 
-    const actionOptions = Object.entries(actions).map(([key, value]) => {
-        return {
-            value: key,
-            label: value,
-            key,
-        }
-    })
 
     const logicOperatorsOptions = Object.entries(logicOperators).map(([key, value]) => {
         return {
@@ -82,17 +71,7 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
         }
     })
 
-    const sensorsOptions = sensors.map(({ id = "", name }) => {
-        return {
-            value: id,
-            label: name,
-            key: id,
-        }
-    })
-
-    const selectedSensorInstance = sensors.find(sensor => sensor.id === targetSensor)
-
-    const sensorSchema = selectedSensorInstance ? sensorSchemas.find(schema => schema.id === selectedSensorInstance.type) : false
+    const sensorSchema = sensorSchemas.find(schema => schema.id === sensor.type)
     const isMultiplePortSensor = sensorSchema && sensorSchema.port.multiplePort
     const sensorSourceOptions = isMultiplePortSensor && sensorSchema.port.sources ? sensorSchema.port.sources.map(({ id, label }) => {
         return {
@@ -104,7 +83,7 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
 
 
     return (
-        <form onSubmit={handleSubmit(() => newActuatorTrigger())}>
+        <form onSubmit={handleSubmit(() => newNotificationTrigger())}>
             <Controller
                 control={control}
                 name="name"
@@ -121,39 +100,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 )}
             />
 
-            <Controller
-                control={control}
-                name="action"
-                rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
-                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
-                    <OptionsField
-                        label="Action"
-                        options={actionOptions}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        isError={error ? true : false}
-                    />
-                )}
-            />
-
-            <Controller
-                control={control}
-                name="sensor"
-                rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
-                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
-                    <OptionsField
-                        label="Sensor"
-                        options={sensorsOptions}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        isError={error ? true : false}
-                    />
-                )}
-            />
 
             {isMultiplePortSensor && <Controller
                 control={control}
@@ -208,11 +154,11 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
 
             <Controller
                 control={control}
-                name="description"
+                name="content"
                 defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <TextField
-                        label="Description"
+                        label="Content"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
