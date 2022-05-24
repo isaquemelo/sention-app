@@ -20,6 +20,7 @@ import Logout from './pages/Logout'
 import CreateActuatorTrigger from './pages/CreateActuatorTrigger'
 import CreateNotificationTrigger from './pages/CreateNotificationTrigger'
 import ViewSensor from './pages/ViewSensor'
+import ViewActuator from './pages/ViewActuator'
 
 function App() {
 
@@ -81,6 +82,12 @@ function App() {
         <Route path="/actuators" element={
           <AuthRoute>
             <InjectLayoutElements element={<Actuators />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/actuators/:actuatorId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<ViewActuator />} />
           </AuthRoute>
         } />
 

@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
-import sensorSchemas from "../../constants/sensorSchemas";
+
 import deviceToUsedPorts from "../../adapters/deviceToUsedPorts";
 import Device from "../../types/Device";
 import FloatingButton from "../FloatingButton";
@@ -17,23 +17,36 @@ import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
 import "./style.scss";
 import pins from "../../constants/pins";
+import actuatorSchemas from "../../constants/actuatorSchemas";
 
 
 type changeFunction = (text: any) => void
 
 
 type Props = {
+    submitForm?: changeFunction,
+    updateIcon?: changeFunction,
     device: Device,
+    actuator?: Actuator
 }
 
-export default function ActuatorForm({ device }: Props) {
+const actuatorOptions = actuatorSchemas.map(({ id, label }) => {
+    return {
+        label: label,
+        value: id,
+        key: id,
+    }
+})
+
+export default function ActuatorForm({ updateIcon, device, actuator, submitForm = () => {}}: Props) {
     const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
+
     const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    const [actuatorSchema, setActuatorSchema] = useState<typeof actuatorSchemas[number] | undefined>()
 
     const name = watch("name");
     const port = watch("port");
-
-    const queryClient = useQueryClient()
 
     const { mutate: newActuator } = useMutation(
         () => {
@@ -51,7 +64,9 @@ export default function ActuatorForm({ device }: Props) {
         }
     );
 
-    const usedPorts = deviceToUsedPorts(device)
+    const supportedPorts = actuatorSchema ? actuatorSchema.port.supportedPorts : []
+    const ignoredPorts = actuator ? actuator.port : false
+    const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
         <form onSubmit={handleSubmit(() => newActuator())}>
