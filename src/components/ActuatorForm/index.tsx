@@ -38,21 +38,17 @@ const actuatorOptions = actuatorSchemas.map(({ id, label }) => {
     }
 })
 
-export default function ActuatorForm({ updateIcon, device, actuator, submitForm = () => {}}: Props) {
-    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
-
+export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient()
+    
     const [actuatorSchema, setActuatorSchema] = useState<typeof actuatorSchemas[number] | undefined>()
-
-    const name = watch("name");
-    const port = watch("port");
 
     const { mutate: newActuator } = useMutation(
         () => {
             return createActuator(device.id, new Actuator({
                 name,
-                port: port,
+                port: parseInt(port),
                 type: 'DIGITAL',
             }))
         },
@@ -63,6 +59,18 @@ export default function ActuatorForm({ updateIcon, device, actuator, submitForm 
             }
         }
     );
+
+    
+    const {handleSubmit, watch, formState: { errors }, control, } = useForm(
+        {
+            defaultValues: {
+                name: actuator ? actuator.name : "",
+                port: actuator ? actuator.type : ""
+            }
+        }
+    );
+    const name = watch("name");
+    const port = watch("port");
 
     const supportedPorts = actuatorSchema ? actuatorSchema.port.supportedPorts : []
     const ignoredPorts = actuator ? actuator.port : false

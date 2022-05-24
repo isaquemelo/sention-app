@@ -11,7 +11,7 @@ import ShortHeader from "../../components/ShortHeader";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
 
-import { default as SensorType } from "../../types/Sensor";
+import { default as ActuatorType } from "../../types/Actuator";
 import { getDevice } from "../../services/devices/getDevice";
 import ActuatorForm from "../../components/ActuatorForm";
 import { getActuator } from "../../services/actuators/getActuator";
@@ -25,8 +25,6 @@ export default function ViewActuator({ }: Props) {
     const { isLoading, data: actuator} = useQuery(["sensor", actuatorId], () => getActuator(actuatorId))
     const { isLoading: isLoadingDevice, data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
 
-    const [actuatorIcon, setActuatorIcon] = useState<any>(UnknownTypeIcon)
-
     const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
 
     return (
@@ -34,7 +32,7 @@ export default function ViewActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {device && <ActuatorForm device={device} actuator={actuator} />}
+                {actuator && device && <ActuatorForm device={device} actuator={actuator}/>}
             </div>
 
         </div>
