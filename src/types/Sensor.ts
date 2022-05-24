@@ -10,6 +10,7 @@ export default class Sensor {
     type: types
     port: object | string | number
     notificationTriggers?: NotificationTrigger[]
+    deviceId?: string
     createdAt?: Date
     updatedAt?: Date
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -17,23 +17,30 @@ import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
 import "./style.scss";
 
-type changeFunction = (text: any) => void
+type changeFunction = (text?: any, ...any: any) => void
 
 
 type Props = {
+    submitForm?: changeFunction,
     updateIcon?: changeFunction,
     device: Device,
+    sensor?: Sensor,
 }
 
-export default function SensorForm({ updateIcon, device }: Props) {
-    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
+const sensorOptions = sensorSchemas.map(({ id, label }) => {
+    return {
+        label: label,
+        value: id,
+        key: id,
+    }
+})
+
+
+export default function SensorForm({ updateIcon, device, sensor, submitForm = () => { } }: Props) {
     const navigate = useNavigate();
-
-    const type = watch("type");
-    const name = watch("name");
-    const port = watch("port");
-
     const queryClient = useQueryClient()
+
+    const [sensorSchema, setSensorSchema] = useState<typeof sensorSchemas[number] | undefined>()
 
     const { mutate: newSensor } = useMutation(
         () => {
@@ -42,11 +49,12 @@ export default function SensorForm({ updateIcon, device }: Props) {
 
             if (sensorSchema && sensorSchema.port.meta && isMultiplePort) {
                 sensorSchema.port.meta.forEach(({ id }) => {
+                    //@ts-ignore
                     multiplePorts[id] = getValues(`port-${id}`);
                 })
             }
 
-            return createSensor(device.id, new Sensor({
+            return createSensor(device!.id, new Sensor({
                 name,
                 port: isMultiplePort ? multiplePorts : port,
                 type,
@@ -54,36 +62,44 @@ export default function SensorForm({ updateIcon, device }: Props) {
         },
         {
             onSuccess: async () => {
-                await queryClient.invalidateQueries(["device", device.id]);
-                navigate(`/devices/${device.id}`)
+                await queryClient.invalidateQueries(["device", device!.id]);
+                navigate(`/devices/${device!.id}`)
             }
         }
     );
 
+    const { handleSubmit, getValues, watch, control, } = useForm(
+        {
+            defaultValues: {
+                name: sensor ? sensor.name : "",
+                type: sensor ? sensor.type : "",
+                port: sensor && typeof sensor.port !== 'object' ? sensor.port : ""
+            }
+        });
+
+
+
+    const type = watch("type");
+    const name = watch("name");
+    const port = watch("port");
+
     useEffect(() => {
+        setSensorSchema(sensorSchemas.find(({ id }) => id === type))
+
         if (updateIcon)
             updateIcon(type)
     }, [type]);
 
-    const sensorOptions = sensorSchemas.map(({ id, label }) => {
-        return {
-            label: label,
-            value: id,
-            key: id,
-        }
-    })
-
-    const sensorSchema = sensorSchemas.find(({ id }) => id === type)
     const supportedPorts = sensorSchema ? sensorSchema.port.supportedPorts : []
-    const usedPorts = deviceToUsedPorts(device)
+    const ignoredPorts = sensor ? sensor.port : false
+    const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => newSensor())}>
+        <form onSubmit={handleSubmit(data => sensor ? submitForm(data, sensorSchema) : newSensor())}>
             <Controller
                 control={control}
                 name="name"
                 rules={{ required: true, minLength: 5 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref, }, fieldState: { error } }) => (
                     <TextField
                         label="Name"
@@ -99,7 +115,7 @@ export default function SensorForm({ updateIcon, device }: Props) {
                 control={control}
                 name="type"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
+                // defaultValue={}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Type"
@@ -121,10 +137,15 @@ export default function SensorForm({ updateIcon, device }: Props) {
                                 key={port.id}
                                 rules={{ required: true, minLength: 1 }}
                                 control={control}
+                                // @ts-ignore
                                 name={`port-${port.id}`}
-                                defaultValue={""}
+                                defaultValue={
+                                    // @ts-ignore
+                                    sensor ? sensor.port[port.id] : ""
+                                }
                                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                                     <PortSelector
+                                        // @ts-ignore
                                         value={value}
                                         onChange={onChange}
                                         label={`Port ${port.label}`}
@@ -144,11 +165,10 @@ export default function SensorForm({ updateIcon, device }: Props) {
                 <Controller
                     control={control}
                     name="port"
-                    defaultValue={""}
                     rules={{ required: true, minLength: 1 }}
                     render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                         <PortSelector
-                            value={value}
+                            value={(value as number)}
                             onChange={onChange}
                             label={`Port`}
                             acceptedPorts={supportedPorts}

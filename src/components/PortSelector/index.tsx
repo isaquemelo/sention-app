@@ -6,7 +6,7 @@ type Props = {
     acceptedPorts: number[],
     usedPorts: number[],
     label: string,
-    value: number,
+    value: number | string,
     isError?: boolean,
     onChange: onChangeFunction,
 }
@@ -24,8 +24,8 @@ export default function PortSelector({ acceptedPorts, usedPorts, label, value, i
                     const isUsed = usedPorts.some(port => port === acceptedPort)
 
                     return (
-                        <li key={acceptedPort} className={`ports-port ${isUsed ? 'ports-port--used' : ''} ${value === acceptedPort ? 'ports-port--selected' : ''}`}>
-                            <button disabled={isUsed} type="button" onClick={() => onChange(acceptedPort)}>{acceptedPort}</button>
+                        <li key={acceptedPort} className={`ports-port ${isUsed && acceptedPort != value ? 'ports-port--used' : ''} ${value === acceptedPort ? 'ports-port--selected' : ''}`}>
+                            <button disabled={isUsed && acceptedPort != value} type="button" onClick={() => onChange(acceptedPort)}>{acceptedPort}</button>
                         </li>
                     )
                 })}
