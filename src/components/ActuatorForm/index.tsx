@@ -20,14 +20,13 @@ import pins from "../../constants/pins";
 import actuatorSchemas from "../../constants/actuatorSchemas";
 
 
-type changeFunction = (text: any) => void
+type changeFunction = (text?: any, ...any: any) => void
 
 
 type Props = {
-    submitForm?: changeFunction,
-    updateIcon?: changeFunction,
     device: Device,
-    actuator?: Actuator
+    actuator?: Actuator,
+    submitForm?: changeFunction,
 }
 
 const actuatorOptions = actuatorSchemas.map(({ id, label }) => {
@@ -72,12 +71,12 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
     const name = watch("name");
     const port = watch("port");
 
-    const supportedPorts = actuatorSchema ? actuatorSchema.port.supportedPorts : []
+    //const supportedPorts = actuatorSchema ? actuatorSchema.port.supportedPorts : []
     const ignoredPorts = actuator ? actuator.port : false
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(() => newActuator())}>
+        <form onSubmit={handleSubmit(data => actuator ? submitForm(data, actuatorSchema) : newActuator())}>
             <Controller
                 control={control}
                 name="name"

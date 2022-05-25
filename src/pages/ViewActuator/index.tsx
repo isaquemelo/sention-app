@@ -32,7 +32,7 @@ export default function ViewActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorForm device={device} actuator={actuator}/>}
+                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={(data, schema) => { console.log("Formulario submetido", data, schema) }}/>}
             </div>
 
         </div>
