@@ -14,7 +14,6 @@ import { getDevice } from "../../services/devices/getDevice";
 import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { createSensor } from "../../services/sensors/createSensor";
-import sensorSchemas from "../../constants/sensorSchemas";
 
 type Props = {
 

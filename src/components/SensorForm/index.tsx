@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 import sensorSchemas from "../../constants/sensorSchemas";
@@ -11,7 +9,6 @@ import FloatingButton from "../FloatingButton";
 import OptionsField from "../OptionsField";
 import PortSelector from "../PortSelector";
 import TextField from "../TextField";
-import { createSensor } from "../../services/sensors/createSensor";
 
 import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
