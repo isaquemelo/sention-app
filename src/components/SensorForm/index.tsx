@@ -19,7 +19,7 @@ import "./style.scss";
 
 type changeFunction = (text?: any, ...any: any) => void
 
-type StructedFormData = { name: string, type: string, port: string | number | object }
+type StructedFormData = { id?: string, name: string, type: string, port: string | number | object }
 
 type Props = {
     submitForm: (data: StructedFormData) => any,
@@ -61,11 +61,17 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
             })
         }
 
-        return {
+        const newSensor: StructedFormData = {
             name,
             type,
             port: isMultiplePort ? multiplePorts : port,
         }
+
+        if (sensor && sensor.id) {
+            newSensor.id = sensor.id
+        }
+
+        return newSensor
     }
 
     const type = watch("type");
