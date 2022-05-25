@@ -40,8 +40,8 @@ export default function ViewSensor({ }: Props) {
         },
         {
             onSuccess: async () => {
+                queryClient.invalidateQueries(["device", device!.id]);
                 await queryClient.invalidateQueries(["sensor", sensorId]);
-                navigate(`/devices/${device!.id}`)
             }
         }
     );
@@ -58,10 +58,6 @@ export default function ViewSensor({ }: Props) {
         }
     }
 
-    const submitForm = (data: { name: string, type: string, port: string | number }, schema: typeof sensorSchemas[number]) => {
-        console.log("Fui chamdo ein", data, schema)
-    }
-
     const Icon: any = sensorIcon
 
     return (
@@ -69,7 +65,7 @@ export default function ViewSensor({ }: Props) {
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={submitForm} />}
+                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={saveSensor} />}
             </div>
 
         </div>
