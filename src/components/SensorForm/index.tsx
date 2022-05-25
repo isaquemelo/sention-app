@@ -21,7 +21,7 @@ type changeFunction = (text?: any, ...any: any) => void
 
 
 type Props = {
-    submitForm?: changeFunction,
+    submitForm: (data: { name: string, type: string, port: string | number }, sensorSchema: typeof sensorSchemas[number]) => any,
     updateIcon?: changeFunction,
     device: Device,
     sensor?: Sensor,
@@ -37,38 +37,9 @@ const sensorOptions = sensorSchemas.map(({ id, label }) => {
 
 
 export default function SensorForm({ updateIcon, device, sensor, submitForm = () => { } }: Props) {
-    const navigate = useNavigate();
-    const queryClient = useQueryClient()
-
     const [sensorSchema, setSensorSchema] = useState<typeof sensorSchemas[number] | undefined>()
 
-    const { mutate: newSensor } = useMutation(
-        () => {
-            const isMultiplePort = sensorSchema?.port.multiplePort ?? false
-            const multiplePorts: any = {}
-
-            if (sensorSchema && sensorSchema.port.meta && isMultiplePort) {
-                sensorSchema.port.meta.forEach(({ id }) => {
-                    //@ts-ignore
-                    multiplePorts[id] = getValues(`port-${id}`);
-                })
-            }
-
-            return createSensor(device!.id, new Sensor({
-                name,
-                port: isMultiplePort ? multiplePorts : port,
-                type,
-            }))
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries(["device", device!.id]);
-                navigate(`/devices/${device!.id}`)
-            }
-        }
-    );
-
-    const { handleSubmit, getValues, watch, control, } = useForm(
+    const { handleSubmit, watch, control, } = useForm(
         {
             defaultValues: {
                 name: sensor ? sensor.name : "",
@@ -80,8 +51,6 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
 
 
     const type = watch("type");
-    const name = watch("name");
-    const port = watch("port");
 
     useEffect(() => {
         setSensorSchema(sensorSchemas.find(({ id }) => id === type))
@@ -95,7 +64,7 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => sensor ? submitForm(data, sensorSchema) : newSensor())}>
+        <form onSubmit={handleSubmit(data => submitForm(data, sensorSchema!))}>
             <Controller
                 control={control}
                 name="name"

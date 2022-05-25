@@ -14,6 +14,7 @@ import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { getSensor } from "../../services/sensors/getSensor";
 import { getDevice } from "../../services/devices/getDevice";
+import sensorSchemas from "../../constants/sensorSchemas";
 
 type Props = {
 
@@ -35,9 +36,9 @@ export default function ViewSensor({ }: Props) {
         }
     }
 
-    useEffect(() => {
-        console.log("device", device)
-    }, [device])
+    const submitForm = (data: { name: string, type: string, port: string | number }, schema: typeof sensorSchemas[number]) => {
+        console.log("Fui chamdo ein", data, schema)
+    }
 
     const Icon: any = sensorIcon
 
@@ -46,7 +47,7 @@ export default function ViewSensor({ }: Props) {
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={(data, schema) => { console.log("Fui chamdo ein", data, schema) }} />}
+                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={submitForm} />}
             </div>
 
         </div>
