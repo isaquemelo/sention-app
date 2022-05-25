@@ -27,12 +27,16 @@ export default function ViewActuator({ }: Props) {
 
     const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
 
+    const submitForm = (data: { name: string, port: number | string }) => {
+        console.log("Fui chamdo ein", data)
+    }
+
     return (
         <div className="create-actuator">
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={(data, schema) => { console.log("Formulario submetido", data, schema) }}/>}
+                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={submitForm}/>}
             </div>
 
         </div>

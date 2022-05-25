@@ -17,7 +17,6 @@ import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
 import "./style.scss";
 import pins from "../../constants/pins";
-import actuatorSchemas from "../../constants/actuatorSchemas";
 
 
 type changeFunction = (text?: any, ...any: any) => void
@@ -26,57 +25,30 @@ type changeFunction = (text?: any, ...any: any) => void
 type Props = {
     device: Device,
     actuator?: Actuator,
-    submitForm?: changeFunction,
+    submitForm: (data: { name: string, port: number | string }) => any
 }
-
-const actuatorOptions = actuatorSchemas.map(({ id, label }) => {
-    return {
-        label: label,
-        value: id,
-        key: id,
-    }
-})
 
 export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient()
-    
-    const [actuatorSchema, setActuatorSchema] = useState<typeof actuatorSchemas[number] | undefined>()
 
-    const { mutate: newActuator } = useMutation(
-        () => {
-            return createActuator(device.id, new Actuator({
-                name,
-                port: parseInt(port),
-                type: 'DIGITAL',
-            }))
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries(["device", device.id]);
-                navigate(`/devices/${device.id}`)
-            }
-        }
-    );
-
-    
     const {handleSubmit, watch, formState: { errors }, control, } = useForm(
         {
             defaultValues: {
                 name: actuator ? actuator.name : "",
-                port: actuator ? actuator.type : ""
+                port: actuator ? actuator.port : ""
             }
         }
     );
     const name = watch("name");
     const port = watch("port");
 
-    //const supportedPorts = actuatorSchema ? actuatorSchema.port.supportedPorts : []
+    
     const ignoredPorts = actuator ? actuator.port : false
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => actuator ? submitForm(data, actuatorSchema) : newActuator())}>
+        <form onSubmit={handleSubmit(data => submitForm(data))}>
             <Controller
                 control={control}
                 name="name"
