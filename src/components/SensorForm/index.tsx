@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 import sensorSchemas from "../../constants/sensorSchemas";
@@ -11,7 +9,6 @@ import FloatingButton from "../FloatingButton";
 import OptionsField from "../OptionsField";
 import PortSelector from "../PortSelector";
 import TextField from "../TextField";
-import { createSensor } from "../../services/sensors/createSensor";
 
 import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
@@ -19,12 +16,14 @@ import "./style.scss";
 
 type changeFunction = (text?: any, ...any: any) => void
 
+type StructuredFormData = { id?: string, name: string, type: string, port: string | number | object }
 
 type Props = {
-    submitForm: (data: { name: string, type: string, port: string | number }, sensorSchema: typeof sensorSchemas[number]) => any,
+    submitForm: (data: StructuredFormData) => any,
     updateIcon?: changeFunction,
     device: Device,
     sensor?: Sensor,
+
 }
 
 const sensorOptions = sensorSchemas.map(({ id, label }) => {
@@ -39,7 +38,7 @@ const sensorOptions = sensorSchemas.map(({ id, label }) => {
 export default function SensorForm({ updateIcon, device, sensor, submitForm = () => { } }: Props) {
     const [sensorSchema, setSensorSchema] = useState<typeof sensorSchemas[number] | undefined>()
 
-    const { handleSubmit, watch, control, } = useForm(
+    const { handleSubmit, getValues, watch, control, } = useForm(
         {
             defaultValues: {
                 name: sensor ? sensor.name : "",
@@ -48,9 +47,33 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
             }
         });
 
+    const generateStructuredData = (): StructuredFormData => {
+        const isMultiplePort = sensorSchema?.port.multiplePort ?? false
+        const multiplePorts: any = {}
 
+        if (sensorSchema && sensorSchema.port.meta && isMultiplePort) {
+            sensorSchema.port.meta.forEach(({ id }) => {
+                //@ts-ignore
+                multiplePorts[id] = getValues(`port-${id}`);
+            })
+        }
+
+        const newSensor: StructuredFormData = {
+            name,
+            type,
+            port: isMultiplePort ? multiplePorts : port,
+        }
+
+        if (sensor && sensor.id) {
+            newSensor.id = sensor.id
+        }
+
+        return newSensor
+    }
 
     const type = watch("type");
+    const name = watch("name");
+    const port = watch("port");
 
     useEffect(() => {
         setSensorSchema(sensorSchemas.find(({ id }) => id === type))
@@ -64,7 +87,7 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => submitForm(data, sensorSchema!))}>
+        <form onSubmit={handleSubmit(() => submitForm(generateStructuredData()))}>
             <Controller
                 control={control}
                 name="name"

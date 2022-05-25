@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
 
@@ -9,21 +9,41 @@ import "./style.scss";
 
 import ShortHeader from "../../components/ShortHeader";
 
-import { default as SensorType } from "../../types/Sensor";
+import Sensor, { default as SensorType } from "../../types/Sensor";
 import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { getSensor } from "../../services/sensors/getSensor";
 import { getDevice } from "../../services/devices/getDevice";
-import sensorSchemas from "../../constants/sensorSchemas";
+import { updateSensor } from "../../services/sensors/updateSensor";
 
 type Props = {
 
 }
 
+type StructedFormData = { name: string, type: string, port: string | number | object }
+
+
 export default function ViewSensor({ }: Props) {
+    const queryClient = useQueryClient()
+
     const { sensorId = "" } = useParams();
     const { isLoading, data: sensor } = useQuery(["sensor", sensorId], () => getSensor(sensorId))
     const { isLoading: isLoadingDevice, data: device } = useQuery(["device", sensor?.deviceId], () => sensor && sensor.deviceId ? getDevice(sensor.deviceId) : undefined)
+
+    const { mutate: saveSensor } = useMutation(
+        (event: StructedFormData) => {
+            return updateSensor(new Sensor({
+                ...event
+            }))
+        },
+        {
+            onSuccess: async () => {
+                queryClient.invalidateQueries(["device", device!.id]);
+                await queryClient.invalidateQueries(["sensor", sensorId]);
+            }
+        }
+    );
+
 
     const [sensorIcon, setSensorIcon] = useState<any>(UnknownTypeIcon)
 
@@ -36,10 +56,6 @@ export default function ViewSensor({ }: Props) {
         }
     }
 
-    const submitForm = (data: { name: string, type: string, port: string | number }, schema: typeof sensorSchemas[number]) => {
-        console.log("Fui chamdo ein", data, schema)
-    }
-
     const Icon: any = sensorIcon
 
     return (
@@ -47,7 +63,7 @@ export default function ViewSensor({ }: Props) {
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={submitForm} />}
+                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={saveSensor} />}
             </div>
 
         </div>

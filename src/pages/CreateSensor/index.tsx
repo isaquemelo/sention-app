@@ -14,11 +14,12 @@ import { getDevice } from "../../services/devices/getDevice";
 import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { createSensor } from "../../services/sensors/createSensor";
-import sensorSchemas from "../../constants/sensorSchemas";
 
 type Props = {
 
 }
+
+type StructedFormData = { name: string, type: string, port: string | number | object }
 
 export default function CreateSensor({ }: Props) {
     const navigate = useNavigate();
@@ -30,23 +31,9 @@ export default function CreateSensor({ }: Props) {
     const [sensorIcon, setSensorIcon] = useState<any>(UnknownTypeIcon)
 
     const { mutate: newSensor } = useMutation(
-        (event: { data: { name: string, type: string, port: string | number }, sensorSchema: typeof sensorSchemas[number] }) => {
-            const { data: { name, port, type }, sensorSchema } = event;
-
-            const isMultiplePort = sensorSchema?.port.multiplePort ?? false
-            const multiplePorts: any = {}
-
-            if (sensorSchema && sensorSchema.port.meta && isMultiplePort) {
-                sensorSchema.port.meta.forEach(({ id }) => {
-                    //@ts-ignore
-                    multiplePorts[id] = event.data[`port-${id}`];
-                })
-            }
-
+        (event: StructedFormData) => {
             return createSensor(device!.id, new Sensor({
-                name,
-                port: isMultiplePort ? multiplePorts : port,
-                type,
+                ...event
             }))
         },
         {
@@ -73,7 +60,7 @@ export default function CreateSensor({ }: Props) {
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                {device && <SensorForm updateIcon={updateSensorIcon} device={device} submitForm={(data, sensorSchema) => newSensor({ data, sensorSchema })} />}
+                {device && <SensorForm updateIcon={updateSensorIcon} device={device} submitForm={newSensor} />}
             </div>
 
         </div>
