@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
@@ -14,7 +14,6 @@ import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { getSensor } from "../../services/sensors/getSensor";
 import { getDevice } from "../../services/devices/getDevice";
-import sensorSchemas from "../../constants/sensorSchemas";
 import { updateSensor } from "../../services/sensors/updateSensor";
 
 type Props = {
@@ -25,7 +24,6 @@ type StructedFormData = { name: string, type: string, port: string | number | ob
 
 
 export default function ViewSensor({ }: Props) {
-    const navigate = useNavigate();
     const queryClient = useQueryClient()
 
     const { sensorId = "" } = useParams();
