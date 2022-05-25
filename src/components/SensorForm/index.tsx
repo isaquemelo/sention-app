@@ -16,10 +16,10 @@ import "./style.scss";
 
 type changeFunction = (text?: any, ...any: any) => void
 
-type StructedFormData = { id?: string, name: string, type: string, port: string | number | object }
+type StructuredFormData = { id?: string, name: string, type: string, port: string | number | object }
 
 type Props = {
-    submitForm: (data: StructedFormData) => any,
+    submitForm: (data: StructuredFormData) => any,
     updateIcon?: changeFunction,
     device: Device,
     sensor?: Sensor,
@@ -47,7 +47,7 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
             }
         });
 
-    const generateStructuredData = (): StructedFormData => {
+    const generateStructuredData = (): StructuredFormData => {
         const isMultiplePort = sensorSchema?.port.multiplePort ?? false
         const multiplePorts: any = {}
 
@@ -58,7 +58,7 @@ export default function SensorForm({ updateIcon, device, sensor, submitForm = ()
             })
         }
 
-        const newSensor: StructedFormData = {
+        const newSensor: StructuredFormData = {
             name,
             type,
             port: isMultiplePort ? multiplePorts : port,
