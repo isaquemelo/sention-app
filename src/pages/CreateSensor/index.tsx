@@ -33,8 +33,6 @@ export default function CreateSensor({ }: Props) {
 
     const { mutate: newSensor } = useMutation(
         (event: StructedFormData) => {
-            console.log("event", event)
-
             return createSensor(device!.id, new Sensor({
                 ...event
             }))
