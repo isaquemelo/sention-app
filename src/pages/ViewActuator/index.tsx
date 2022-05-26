@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as ActuatorIcon } from '@images/actuator.svg';
 
@@ -25,30 +25,40 @@ type Props = {
 type StructedFormData = { name: string, type: string, port: number }
 
 export default function ViewActuator({ }: Props) {
+    const queryClient = useQueryClient()
+
     const { actuatorId = "" } = useParams()
     const { isLoading, data: actuator} = useQuery(["sensor", actuatorId], () => getActuator(actuatorId))
     const { isLoading: isLoadingDevice, data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
+    
+    const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
 
-    const {mutate: saveSensor} = useMutation(
+    //TO TEST
+    const submitForm = (data: { name: string, port: number | string }) => {
+        console.log("Fui chamdo ein", data)
+    }
+
+    //UPDATE ACTUATOR
+    const {mutate: saveActuator} = useMutation(
         (event: StructedFormData) => {
             return updateActuator(new Actuator({
                 ...event
             }))
+        },
+        {
+            onSuccess: async () => {
+                queryClient.invalidateQueries(["device", device!.id]);
+                await queryClient.invalidateQueries(["actuator", actuatorId])
+            }
         }
     )
-    
-    const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
-
-    const submitForm = (data: { name: string, port: number | string }) => {
-        console.log("Fui chamdo ein", data)
-    }
 
     return (
         <div className="create-actuator">
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={submitForm}/>}
+                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={saveActuator}/>}
             </div>
 
         </div>

@@ -17,29 +17,47 @@ import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
 import "./style.scss";
 import pins from "../../constants/pins";
+import sensorSchemas from "../../constants/sensorSchemas";
 
 
 type changeFunction = (text?: any, ...any: any) => void
 
+type StructedFormData = {id?: string, name: string, type: string, port: number }
 
 type Props = {
     device: Device,
     actuator?: Actuator,
-    submitForm: (data: { name: string, port: number | string }) => any
+    submitForm: (data: StructedFormData) => any
 }
 
 export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
     const navigate = useNavigate();
-    const queryClient = useQueryClient()
 
     const {handleSubmit, watch, formState: { errors }, control, } = useForm(
         {
             defaultValues: {
                 name: actuator ? actuator.name : "",
-                port: actuator ? actuator.port : ""
+                type: actuator ? actuator.type : "",
+                port: actuator ? actuator.port : -1
             }
         }
     );
+
+    const generateStructuredData = (): StructedFormData => {
+
+        const newActuator: StructedFormData = {
+            name,
+            type: "DIGITAL",
+            port: port
+        }
+
+        if (actuator && actuator.id){
+            newActuator.id = actuator.id
+        }
+
+        return newActuator
+    }
+
     const name = watch("name");
     const port = watch("port");
 
@@ -48,7 +66,7 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => submitForm(data))}>
+        <form onSubmit={handleSubmit(data => submitForm(generateStructuredData()))}>
             <Controller
                 control={control}
                 name="name"
@@ -68,7 +86,7 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
             <Controller
                 control={control}
                 name="port"
-                defaultValue={""}
+                defaultValue={-1}
                 rules={{ required: true, minLength: 1 }}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <PortSelector
