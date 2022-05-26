@@ -24,7 +24,8 @@ import NotificationTrigger from "../../types/NotificationTrigger";
 
 
 type Props = {
-    sensor: Sensor,
+    notificationTrigger?: NotificationTrigger,
+    sensor?: Sensor,
     submitForm: (data: StructuredFormData) => any,
 }
 
@@ -38,8 +39,17 @@ type StructuredFormData = {
     dataSource?: string
 }
 
-export default function NotificationTriggerForm({ sensor, submitForm }: Props) {
-    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
+export default function NotificationTriggerForm({ sensor, submitForm, notificationTrigger }: Props) {
+    const { register, handleSubmit, getValues, watch, control, } = useForm(
+        {
+            defaultValues: {
+                name: notificationTrigger ? notificationTrigger.name : "",
+                dataSource: notificationTrigger ? notificationTrigger.dataSource : "",
+                operator: notificationTrigger ? notificationTrigger.logicOperator : "",
+                value: notificationTrigger ? notificationTrigger.value : "",
+                content: notificationTrigger ? notificationTrigger.content : "",
+            }
+        });
 
     const name = watch("name");
     const dataSource = watch("dataSource");
@@ -52,7 +62,7 @@ export default function NotificationTriggerForm({ sensor, submitForm }: Props) {
             name,
             type: "EMAIL",
             logicOperator: operator,
-            value: parseInt(limitValue),
+            value: parseInt(limitValue as string),
             content,
             dataSource: isMultiplePortSensor ? dataSource : undefined
         }
