@@ -18,6 +18,7 @@ import { getDevice } from "../../services/devices/getDevice";
 import { updateSensor } from "../../services/sensors/updateSensor";
 import ListTriggers from "../../components/ListTriggers";
 import Typography from "../../components/Typography";
+import NotificationTrigger from "../../types/NotificationTrigger";
 
 type Props = {
 
@@ -80,7 +81,7 @@ export default function ViewSensor({ }: Props) {
                                     </button>
                                 </div>
 
-                                <ListTriggers triggers={sensor.notificationTriggers} />
+                                <ListTriggers triggers={sensor.notificationTriggers as NotificationTrigger[]} />
                             </div>
                         }
 

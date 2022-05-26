@@ -67,6 +67,10 @@ export default function NotificationTriggerForm({ sensor, submitForm, notificati
             dataSource: isMultiplePortSensor ? dataSource : undefined
         }
 
+        if (notificationTrigger) {
+            newTrigger.id = notificationTrigger.id
+        }
+
         return newTrigger
     }
 

@@ -20,6 +20,7 @@ import Logout from './pages/Logout'
 import CreateActuatorTrigger from './pages/CreateActuatorTrigger'
 import CreateNotificationTrigger from './pages/CreateNotificationTrigger'
 import ViewSensor from './pages/ViewSensor'
+import ViewNotificationTrigger from './pages/ViewNotificationTrigger'
 
 function App() {
 
@@ -75,6 +76,12 @@ function App() {
         <Route path="/sensors/:sensorId/notification/create" element={
           <AuthRoute>
             <InjectLayoutElements element={<CreateNotificationTrigger />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/sensors/notification/:notificationTriggerId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<ViewNotificationTrigger />} />
           </AuthRoute>
         } />
 

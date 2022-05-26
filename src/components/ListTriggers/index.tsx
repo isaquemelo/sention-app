@@ -14,14 +14,16 @@ export default function ListTriggers({ triggers }: Props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient()
 
+    // @ts-ignore
+    const isNotificationTrigger = (trigger: ActuatorTrigger | NotificationTrigger) => trigger.content ? true : false;
 
     const { mutate: removeTrigger } = useMutation(
         (trigger: ActuatorTrigger | NotificationTrigger) => {
-            if (trigger instanceof ActuatorTrigger) {
-                return deleteActuatorTrigger(trigger.id!)
+            if (isNotificationTrigger(trigger)) {
+                return deleteNotificationTrigger(trigger.id!)
             }
 
-            return deleteNotificationTrigger(trigger.id!)
+            return deleteActuatorTrigger(trigger.id!)
 
         },
         {
@@ -55,7 +57,7 @@ export default function ListTriggers({ triggers }: Props) {
                             }]}
                         onItemClick={
                             () => {
-                                navigate(`#go-to-view-item`)
+                                navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : '#other')
                             }
                         }
                     />
