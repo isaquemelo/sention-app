@@ -7,20 +7,14 @@ import { Controller, useForm } from "react-hook-form";
 import deviceToUsedPorts from "../../adapters/deviceToUsedPorts";
 import Device from "../../types/Device";
 import FloatingButton from "../FloatingButton";
-import OptionsField from "../OptionsField";
 import PortSelector from "../PortSelector";
 import TextField from "../TextField";
-import { createActuator } from "../../services/actuators/createActuator";
 import Actuator from "../../types/Actuator";
 
 import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 
 import "./style.scss";
 import pins from "../../constants/pins";
-import sensorSchemas from "../../constants/sensorSchemas";
-
-
-type changeFunction = (text?: any, ...any: any) => void
 
 type StructedFormData = {id?: string, name: string, type: string, port: number }
 
@@ -64,7 +58,7 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
     return (
-        <form onSubmit={handleSubmit(data => submitForm(generateStructuredData()))}>
+        <form onSubmit={handleSubmit(() => submitForm(generateStructuredData()))}>
             <Controller
                 control={control}
                 name="name"

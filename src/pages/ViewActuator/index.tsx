@@ -41,6 +41,7 @@ export default function ViewActuator({ }: Props) {
     //UPDATE ACTUATOR
     const {mutate: saveActuator} = useMutation(
         (event: StructedFormData) => {
+            console.log(event)
             return updateActuator(new Actuator({
                 ...event
             }))
