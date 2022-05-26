@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as ActuatorIcon } from '@images/actuator.svg';
 
@@ -12,14 +12,35 @@ import ShortHeader from "../../components/ShortHeader";
 import { default as SensorType } from "../../types/Sensor";
 import { getDevice } from "../../services/devices/getDevice";
 import ActuatorForm from "../../components/ActuatorForm";
+import { createActuator } from "../../services/actuators/createActuator";
+import Actuator from "../../types/Actuator";
 
 type Props = {
 
 }
 
+type StructedFormData = { name: string, type: string, port: number }
+
 export default function CreateActuator({ }: Props) {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient()
+
     const { deviceId = "" } = useParams();
     const { isLoading, data: device } = useQuery(["device", deviceId], () => getDevice(deviceId))
+
+    const {mutate: newActuator} = useMutation(
+        (event: StructedFormData) => {
+            return createActuator(device!.id, new Actuator({
+                ...event
+            }))
+        },
+        {
+            onSuccess: async () => {
+                await queryClient.invalidateQueries(["device", device!.id]);
+                navigate(`/devices/${device!.id}`)
+            }
+        }
+    )
 
     const pageTitle = "New actuator" // || the sensor name create
 
@@ -28,7 +49,7 @@ export default function CreateActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {device && <ActuatorForm device={device} />}
+                {device && <ActuatorForm device={device} submitForm={newActuator}/>}
             </div>
 
         </div>
