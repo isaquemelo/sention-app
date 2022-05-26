@@ -39,7 +39,7 @@ export default function Actuators() {
                                 return shouldBeRendered && (
                                     <div key={device.id}>
                                         <div className="heading">
-                                            <Typography className="device-name" type="title" size="l">{device.name ?? device.accessCode}</Typography>
+                                            <Typography className="device-name" type="title" size="m">{device.name ?? device.accessCode}</Typography>
                                             <button onClick={() => navigate(`/devices/${device.id}`)}>
                                                 <EditIcon />
                                             </button>
