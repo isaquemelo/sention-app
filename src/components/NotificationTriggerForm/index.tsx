@@ -23,16 +23,23 @@ import { createNotificationTrigger } from "../../services/notificationTrigger/cr
 import NotificationTrigger from "../../types/NotificationTrigger";
 
 
-type changeFunction = (text: any) => void
-
-
 type Props = {
-    sensor: Sensor
+    sensor: Sensor,
+    submitForm: (data: StructuredFormData) => any,
 }
 
-export default function NotificationTriggerForm({ sensor }: Props) {
+type StructuredFormData = {
+    id?: string
+    name: string
+    type: string
+    logicOperator: string
+    value: number
+    content: string
+    dataSource?: string
+}
+
+export default function NotificationTriggerForm({ sensor, submitForm }: Props) {
     const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
-    const navigate = useNavigate();
 
     const name = watch("name");
     const dataSource = watch("dataSource");
@@ -40,28 +47,18 @@ export default function NotificationTriggerForm({ sensor }: Props) {
     const limitValue = watch("value");
     const content = watch("content");
 
-
-    const queryClient = useQueryClient()
-
-    const { mutate: newNotificationTrigger } = useMutation(
-        () => {
-            return createNotificationTrigger(sensor.id!, new NotificationTrigger({
-                name,
-                type: "EMAIL",
-                logicOperator: operator,
-                value: parseInt(limitValue),
-                content,
-                dataSource: isMultiplePortSensor ? dataSource : undefined
-            }))
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries(["sensor", sensor.id]);
-                // navigate(`/sensors/${sensor.id}`)
-            }
+    const generateStructuredData = (): StructuredFormData => {
+        const newTrigger: StructuredFormData = {
+            name,
+            type: "EMAIL",
+            logicOperator: operator,
+            value: parseInt(limitValue),
+            content,
+            dataSource: isMultiplePortSensor ? dataSource : undefined
         }
-    );
 
+        return newTrigger
+    }
 
     const logicOperatorsOptions = Object.entries(logicOperators).map(([key, value]) => {
         return {
@@ -83,7 +80,7 @@ export default function NotificationTriggerForm({ sensor }: Props) {
 
 
     return (
-        <form onSubmit={handleSubmit(() => newNotificationTrigger())}>
+        <form onSubmit={handleSubmit(() => submitForm(generateStructuredData()))}>
             <Controller
                 control={control}
                 name="name"
