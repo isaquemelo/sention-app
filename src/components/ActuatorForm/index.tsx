@@ -25,7 +25,7 @@ type Props = {
 }
 
 export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
-    const {handleSubmit, watch, formState: { errors }, control, } = useForm(
+    const {handleSubmit, getValues, watch, control, } = useForm(
         {
             defaultValues: {
                 name: actuator ? actuator.name : "",

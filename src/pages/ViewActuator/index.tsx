@@ -15,7 +15,6 @@ import Actuator, { default as ActuatorType } from "../../types/Actuator";
 import { getDevice } from "../../services/devices/getDevice";
 import ActuatorForm from "../../components/ActuatorForm";
 import { getActuator } from "../../services/actuators/getActuator";
-import { createActuator } from "../../services/actuators/createActuator";
 import { updateActuator } from "../../services/actuators/updateActuator";
 
 type Props = {
@@ -33,12 +32,6 @@ export default function ViewActuator({ }: Props) {
     
     const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
 
-    //TO TEST
-    const submitForm = (data: { name: string, port: number | string }) => {
-        console.log("Fui chamdo ein", data)
-    }
-
-    //UPDATE ACTUATOR
     const {mutate: saveActuator} = useMutation(
         (event: StructedFormData) => {
             console.log(event)
