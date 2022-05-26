@@ -5,6 +5,7 @@ export default class NotificationTrigger {
     logicOperator: string
     value: number
     content: string
+    sensorId?: string
     dataSource?: string
 
     constructor(props: NotificationTrigger) {

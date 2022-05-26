@@ -48,14 +48,13 @@ export default function Sensors() {
                                 return shouldBeRendered && (
                                     <div key={device.id}>
                                         <div className="heading">
-                                            <Typography className="device-name" type="title" size="l">{device.name ?? device.accessCode}</Typography>
+                                            <Typography className="device-name" type="title" size="m">{device.name ?? device.accessCode}</Typography>
                                             <button onClick={() => navigator(`/devices/${device.id}`)}>
                                                 <EditIcon />
                                             </button>
                                         </div>
 
                                         <div className="list-sensors">
-                                            {/* <Typography className="sensor-name" type="body" size="m">Sensors</Typography> */}
                                             <ListSensors sensors={device.sensors} />
                                         </div>
                                     </div>

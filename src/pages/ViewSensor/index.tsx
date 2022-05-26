@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
+import { ReactComponent as AddIcon } from '@images/plus-circle.svg';
 
 
 import "./style.scss";
@@ -15,6 +16,9 @@ import buildSensorIcon from "../../builders/buildSensorIcon";
 import { getSensor } from "../../services/sensors/getSensor";
 import { getDevice } from "../../services/devices/getDevice";
 import { updateSensor } from "../../services/sensors/updateSensor";
+import ListTriggers from "../../components/ListTriggers";
+import Typography from "../../components/Typography";
+import NotificationTrigger from "../../types/NotificationTrigger";
 
 type Props = {
 
@@ -24,6 +28,7 @@ type StructedFormData = { name: string, type: string, port: string | number | ob
 
 
 export default function ViewSensor({ }: Props) {
+    const navigate = useNavigate();
     const queryClient = useQueryClient()
 
     const { sensorId = "" } = useParams();
@@ -63,7 +68,25 @@ export default function ViewSensor({ }: Props) {
             <ShortHeader title={pageTitle} icon={Icon} />
 
             <div className="container page">
-                {sensor && device && <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={saveSensor} />}
+                {sensor && device &&
+                    <>
+                        <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={saveSensor} />
+
+                        {sensor.notificationTriggers &&
+                            <div className="notification-triggers">
+                                <div className="notification-triggers-heading">
+                                    <Typography className="notification-triggers__title" type="title" size="m">Notification triggers</Typography>
+                                    <button onClick={() => { navigate(`/sensors/${sensor.id}/notification/create`) }}>
+                                        <AddIcon />
+                                    </button>
+                                </div>
+
+                                <ListTriggers triggers={sensor.notificationTriggers as NotificationTrigger[]} />
+                            </div>
+                        }
+
+                    </>
+                }
             </div>
 
         </div>

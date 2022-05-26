@@ -4,6 +4,10 @@
     justify-content: center;
 
     &-list {
+        > div {
+            margin-bottom: 40px;
+        }
+
         .heading {
             display: flex;
             justify-content: space-between;

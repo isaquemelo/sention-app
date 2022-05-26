@@ -7,11 +7,13 @@ const resources = {
     'GET_DEVICE': `${urls.SENTION_API_BASE}/user/devices/$deviceId`,
     'GET_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId`,
     'GET_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId`,
+    'GET_NOTIFICATION_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/sensors/notificationTrigger/$triggerId`,
 
     'DELETE_DEVICE': `${urls.SENTION_API_BASE}/user/devices/dissociate/$deviceId`,
     'DELETE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/sensors/$sensorId`,
     'DELETE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/actuators/$actuatorId`,
     'DELETE_ACTUATOR_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/actuators/trigger/$triggerId`,
+    'DELETE_NOTIFICATION_TRIGGER': `${urls.SENTION_API_BASE}/user/devices/sensors/notificationTrigger/$triggerId`,
 
     'CREATE_SENSOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/sensors`,
     'CREATE_ACTUATOR': `${urls.SENTION_API_BASE}/user/devices/$deviceId/actuators`,
