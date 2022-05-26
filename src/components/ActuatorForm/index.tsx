@@ -31,8 +31,6 @@ type Props = {
 }
 
 export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
-    const navigate = useNavigate();
-
     const {handleSubmit, watch, formState: { errors }, control, } = useForm(
         {
             defaultValues: {
