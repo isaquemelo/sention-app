@@ -9,8 +9,6 @@ import "./style.scss";
 
 import ShortHeader from "../../components/ShortHeader";
 
-import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
-
 import Actuator, { default as ActuatorType } from "../../types/Actuator";
 import { getDevice } from "../../services/devices/getDevice";
 import ActuatorForm from "../../components/ActuatorForm";
@@ -27,12 +25,12 @@ export default function ViewActuator({ }: Props) {
     const queryClient = useQueryClient()
 
     const { actuatorId = "" } = useParams()
-    const { isLoading, data: actuator} = useQuery(["sensor", actuatorId], () => getActuator(actuatorId))
+    const { isLoading, data: actuator } = useQuery(["actuator", actuatorId], () => getActuator(actuatorId))
     const { isLoading: isLoadingDevice, data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
-    
+
     const pageTitle = isLoading || !actuator ? "Loading..." : actuator.name
 
-    const {mutate: saveActuator} = useMutation(
+    const { mutate: saveActuator } = useMutation(
         (event: StructedFormData) => {
             console.log(event)
             return updateActuator(new Actuator({
@@ -52,7 +50,9 @@ export default function ViewActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorForm device={device} actuator={actuator} submitForm={saveActuator}/>}
+                {actuator && device &&
+                    <ActuatorForm device={device} actuator={actuator} submitForm={saveActuator} />
+                }
             </div>
 
         </div>

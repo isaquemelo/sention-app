@@ -45,7 +45,7 @@ export default function ListTriggers({ triggers }: Props) {
                             {
                                 label: "Edit trigger",
                                 onClick: () => {
-                                    navigate(`#go-to-view-item`)
+                                    navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : '#other')
                                 },
                             },
                             {

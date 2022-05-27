@@ -16,7 +16,13 @@ import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
 import "./style.scss";
 import pins from "../../constants/pins";
 
-type StructedFormData = {id?: string, name: string, type: string, port: number }
+type StructedFormData = {
+    id?: string,
+    name: string,
+    type: string,
+    port: number
+}
+
 
 type Props = {
     device: Device,
@@ -24,13 +30,13 @@ type Props = {
     submitForm: (data: StructedFormData) => any
 }
 
-export default function ActuatorForm({device, actuator, submitForm = () => {}}: Props) {
-    const {handleSubmit, getValues, watch, control, } = useForm(
+export default function ActuatorForm({ device, actuator, submitForm }: Props) {
+    const { handleSubmit, watch, control, } = useForm(
         {
             defaultValues: {
                 name: actuator ? actuator.name : "",
                 type: actuator ? actuator.type : "",
-                port: actuator ? actuator.port : -1
+                port: actuator ? actuator.port.toString() : "",
             }
         }
     );
@@ -40,10 +46,10 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
         const newActuator: StructedFormData = {
             name,
             type: "DIGITAL",
-            port: port
+            port: parseInt(port)
         }
 
-        if (actuator && actuator.id){
+        if (actuator && actuator.id) {
             newActuator.id = actuator.id
         }
 
@@ -53,7 +59,7 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
     const name = watch("name");
     const port = watch("port");
 
-    
+
     const ignoredPorts = actuator ? actuator.port : false
     const usedPorts = deviceToUsedPorts(device, ignoredPorts)
 
@@ -63,8 +69,7 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
                 control={control}
                 name="name"
                 rules={{ required: true, minLength: 5 }}
-                defaultValue={""}
-                render={({ field: { onChange, onBlur, value, ref, }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <TextField
                         label="Name"
                         onChange={onChange}
@@ -78,11 +83,10 @@ export default function ActuatorForm({device, actuator, submitForm = () => {}}: 
             <Controller
                 control={control}
                 name="port"
-                defaultValue={-1}
                 rules={{ required: true, minLength: 1 }}
-                render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <PortSelector
-                        value={value}
+                        value={parseInt(value)}
                         onChange={onChange}
                         label={`Port`}
                         acceptedPorts={pins.ADC_PINS}
