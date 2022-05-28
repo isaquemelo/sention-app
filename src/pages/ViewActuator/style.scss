@@ -1,16 +1,15 @@
-.device{
-    display: flex;
-    flex-direction: column;
+.view-actuator{
+    .actuator-triggers {
+        &-heading {
+            padding: 0 20px 0 15px;
 
-    &-list {
-        
-    }
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
 
-    .no-results {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-        height: calc(100vh - 400px);
+            h1 {
+                margin-bottom: 0;
+            }
+        }
     }
 }
