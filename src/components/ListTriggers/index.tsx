@@ -45,7 +45,7 @@ export default function ListTriggers({ triggers }: Props) {
                             {
                                 label: "Edit trigger",
                                 onClick: () => {
-                                    navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : '#other')
+                                    navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : `/actuators/trigger/${trigger.id}`)
                                 },
                             },
                             {
@@ -57,7 +57,7 @@ export default function ListTriggers({ triggers }: Props) {
                             }]}
                         onItemClick={
                             () => {
-                                navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : '#other')
+                                navigate(isNotificationTrigger(trigger) ? `/sensors/notification/${trigger.id}` : `/actuators/trigger/${trigger.id}`)
                             }
                         }
                     />

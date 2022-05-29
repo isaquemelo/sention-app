@@ -23,6 +23,7 @@ import ViewSensor from './pages/ViewSensor'
 import ViewActuator from './pages/ViewActuator'
 import ViewNotificationTrigger from './pages/ViewNotificationTrigger'
 import ViewSensorData from './pages/ViewSensorData'
+import ViewActuatorTrigger from './pages/ViewActuatorTrigger'
 
 function App() {
 
@@ -108,6 +109,12 @@ function App() {
         <Route path="/actuators/create/:deviceId" element={
           <AuthRoute>
             <InjectLayoutElements element={<CreateActuator />} />
+          </AuthRoute>
+        } />
+
+        <Route path="/actuators/trigger/:triggerId" element={
+          <AuthRoute>
+            <InjectLayoutElements element={<ViewActuatorTrigger />} />
           </AuthRoute>
         } />
 

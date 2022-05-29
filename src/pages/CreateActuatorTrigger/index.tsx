@@ -14,6 +14,8 @@ import { getActuator } from "../../services/actuators/getActuator";
 import ActuatorTriggerForm from "../../components/ActuatorTriggerForm";
 import ActuatorTrigger from "../../types/ActuatorTrigger";
 import { createTrigger } from "../../services/actuatorTrigger/createTrigger";
+
+
 type Props = {
 
 }
@@ -24,7 +26,7 @@ export default function CreateActuatorTrigger({ }: Props) {
     const navigate = useNavigate();
 
     const { data: actuator } = useQuery(["actuator", actuatorId], () => getActuator(actuatorId))
-    const { data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : {})
+    const { data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
 
     const {mutate: newActuatorTrigger} = useMutation(
         (actuatorTrigger: ActuatorTrigger) => {

@@ -44,7 +44,7 @@ export default function ActuatorTriggerForm({ actuator, sensors, actuatorTrigger
                 sensor: actuatorTrigger ? actuatorTrigger.sensorId : "",
                 dataSource: actuatorTrigger ? actuatorTrigger.dataSource : "",
                 operator: actuatorTrigger ? actuatorTrigger.logicOperator : "",
-                value: actuatorTrigger ? actuatorTrigger.value : "",
+                value: actuatorTrigger ? actuatorTrigger.value.toString() : "",
                 description: actuatorTrigger ? actuatorTrigger.description : "",
             }
         }
