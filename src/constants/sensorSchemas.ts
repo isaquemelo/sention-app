@@ -29,7 +29,7 @@ const sensorSchemas = [
                 },
 
                 {
-                    'id': 'SCL',
+                    'id': 'SLC',
                     'label': 'SCL or SCK',
                     'defaultValue': 21,
                 },
