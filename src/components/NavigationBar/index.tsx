@@ -41,6 +41,17 @@ export default function NavigationBar() {
             </NavLink>
 
             <NavLink
+                to="/devices"
+                className={classHandler}>
+
+                <div className="item-icon">
+                    <Device />
+                </div>
+
+                <span>Devices</span>
+            </NavLink>
+
+            <NavLink
                 to="/sensors"
                 className={classHandler}>
 
@@ -60,17 +71,6 @@ export default function NavigationBar() {
                 </div>
 
                 <span>Actuators</span>
-            </NavLink>
-
-            <NavLink
-                to="/devices"
-                className={classHandler}>
-
-                <div className="item-icon">
-                    <Device />
-                </div>
-
-                <span>Devices</span>
             </NavLink>
         </nav>
     );
