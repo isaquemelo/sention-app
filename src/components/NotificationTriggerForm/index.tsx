@@ -62,7 +62,7 @@ export default function NotificationTriggerForm({ sensor, submitForm, notificati
             name,
             type: "EMAIL",
             logicOperator: operator,
-            value: parseInt(limitValue as string),
+            value: parseFloat(limitValue as string),
             content,
             dataSource: isMultiplePortSensor ? dataSource : undefined
         }
