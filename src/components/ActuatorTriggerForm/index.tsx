@@ -198,7 +198,6 @@ export default function ActuatorTriggerForm({ actuator, sensors, actuatorTrigger
                 control={control}
                 name="value"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <TextField
                         label="Value"
@@ -214,7 +213,6 @@ export default function ActuatorTriggerForm({ actuator, sensors, actuatorTrigger
             <Controller
                 control={control}
                 name="description"
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <TextField
                         label="Description"
