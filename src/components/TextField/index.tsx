@@ -4,7 +4,7 @@ import "./style.scss";
 type onChangeFunction = (text: string) => void
 
 type Props = {
-    type?: "text" | "password" | "number",
+    type?: "text" | "password" | "number" | 'datetime-local' | 'date',
     label: string,
     placeholder?: string,
     isError?: boolean,

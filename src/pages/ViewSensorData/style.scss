@@ -2,7 +2,7 @@
     h3 {
         margin-top: 0;
     }
-    
+
     .no-results {
         display: flex;
         justify-content: center;
@@ -37,8 +37,8 @@
 
     .sensor-data {
         list-style: none;
-        padding: 0 15px 20px;
-        border: 2px solid var(--primary-color);
+        padding: 15px 0;
+        // border: 2px solid var(--primary-color);
         background-color: white;
         border-radius: 6px;
         position: relative;
@@ -50,8 +50,14 @@
             border-bottom: 1px dashed rgba(0, 0, 0, 0.5);
             padding: 10px 0;
 
-            span:first-child {
+            span:first-child:not(.freedom):not(.freedom > span) {
                 width: 50px;
+            }
+
+            .freedom {
+                span {
+                    display: block;
+                }
             }
 
             div {
