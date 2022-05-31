@@ -49,7 +49,6 @@ export default function ViewActuatorTrigger({}: Props){
         }
     )
 
-    console.log(actuatorTrigger)
     const pageTitle = isLoading || !actuatorTrigger ? "Loading..." : actuatorTrigger.name
 
     return(
@@ -57,7 +56,7 @@ export default function ViewActuatorTrigger({}: Props){
             <ShortHeader title={pageTitle} icon={<ActuatorTriggerIcon />} />
 
             <div className="container page">
-                {actuatorTrigger && actuator &&
+                {actuatorTrigger && actuator && device &&
                     <>
                         <ActuatorTriggerForm actuator={actuator} sensors={device.sensors} actuatorTrigger={actuatorTrigger} submitForm={saveActuatorTrigger}/>
                     </>

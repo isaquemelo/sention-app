@@ -29,7 +29,7 @@ export default function ListTriggers({ triggers }: Props) {
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries("sensor");
-                await queryClient.invalidateQueries("actuators")
+                await queryClient.invalidateQueries("actuator")
             }
         }
     );
