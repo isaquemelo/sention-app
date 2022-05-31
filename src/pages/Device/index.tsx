@@ -139,7 +139,7 @@ export default function Device() {
                     <div className="no-results">
                         <BoxIcon />
                         <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
-                        <Typography type="body" alignment="center" size="m">Click in the plus icon to add sensors and actuators to your device.</Typography>
+                        <Typography type="body" alignment="center" size="m">Click on the plus icon to add sensors and actuators to your device.</Typography>
                     </div>
                 }
 

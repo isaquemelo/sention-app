@@ -4,13 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 import sensorSchemas from "../../constants/sensorSchemas";
-import deviceToUsedPorts from "../../adapters/deviceToUsedPorts";
-import Device from "../../types/Device";
 import FloatingButton from "../FloatingButton";
 import OptionsField from "../OptionsField";
-import PortSelector from "../PortSelector";
 import TextField from "../TextField";
-import { createActuator } from "../../services/actuators/createActuator";
 import Actuator from "../../types/Actuator";
 
 import { ReactComponent as SaveFloatingIcon } from '@images/save-floating.svg';
@@ -20,20 +16,38 @@ import Sensor from "../../types/Sensor";
 import actions from "../../constants/actuatorActions";
 import logicOperators from "../../constants/logicOperators";
 import ActuatorTrigger from "../../types/ActuatorTrigger";
-import { createTrigger } from "../../services/actuatorTrigger/createTrigger";
-
-
-type changeFunction = (text: any) => void
-
 
 type Props = {
-    actuator: Actuator,
-    sensors: Sensor[]
+    submitForm: (data: StructuredFormData) => any,
+    actuatorTrigger?: ActuatorTrigger
+    sensors: Sensor[],
 }
 
-export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
-    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm();
-    const navigate = useNavigate();
+type StructuredFormData = {
+    id?: string
+    name: string
+    action: string
+    logicOperator: string
+    value: number
+    description: string
+    sensorId: string
+    dataSource?: string
+}
+
+export default function ActuatorTriggerForm({sensors, actuatorTrigger, submitForm}: Props) {
+    const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm(
+        {
+            defaultValues: {
+                name: actuatorTrigger ? actuatorTrigger.name : "",
+                action: actuatorTrigger ? actuatorTrigger.action : "",
+                sensor: actuatorTrigger ? actuatorTrigger.sensorId : "",
+                dataSource: actuatorTrigger ? actuatorTrigger.dataSource : "",
+                operator: actuatorTrigger ? actuatorTrigger.logicOperator : "",
+                value: actuatorTrigger ? actuatorTrigger.value.toString() : "",
+                description: actuatorTrigger ? actuatorTrigger.description : "",
+            }
+        }
+    );
 
     const name = watch("name");
     const action = watch("action");
@@ -43,28 +57,23 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
     const limitValue = watch("value");
     const description = watch("description");
 
-
-    const queryClient = useQueryClient()
-
-    const { mutate: newActuatorTrigger } = useMutation(
-        () => {
-            return createTrigger(actuator.id!, new ActuatorTrigger({
-                name,
-                action,
-                sensorId: targetSensor,
-                logicOperator: operator,
-                value: parseFloat(limitValue),
-                description: description,
-                dataSource: isMultiplePortSensor ? dataSource : undefined
-            }))
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries(["actuator", actuator.id]);
-                navigate(`/devices/${actuator.deviceId}`)
-            }
+    const generateStructuredData = (): StructuredFormData => {
+        const newActuatorTrigger: StructuredFormData = {
+            name,
+            action,
+            logicOperator: operator,
+            value: parseFloat(limitValue as string),
+            description,
+            sensorId: targetSensor,
+            dataSource: isMultiplePortSensor ? dataSource : undefined
         }
-    );
+
+        if (actuatorTrigger){
+            newActuatorTrigger.id = actuatorTrigger.id
+        }
+
+        return newActuatorTrigger
+    }
 
     const actionOptions = Object.entries(actions).map(([key, value]) => {
         return {
@@ -104,12 +113,11 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
 
 
     return (
-        <form onSubmit={handleSubmit(() => newActuatorTrigger())}>
+        <form onSubmit={handleSubmit(() => submitForm(generateStructuredData()))}>
             <Controller
                 control={control}
                 name="name"
                 rules={{ required: true, minLength: 5 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref, }, fieldState: { error } }) => (
                     <TextField
                         label="Name"
@@ -125,7 +133,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 control={control}
                 name="action"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Action"
@@ -142,7 +149,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 control={control}
                 name="sensor"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Sensor"
@@ -159,7 +165,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 control={control}
                 name="dataSource"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Sensor data source"
@@ -176,7 +181,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 control={control}
                 name="operator"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <OptionsField
                         label="Logic operator"
@@ -193,7 +197,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
                 control={control}
                 name="value"
                 rules={{ required: true, minLength: 1 }}
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <TextField
                         label="Value"
@@ -209,7 +212,6 @@ export default function ActuatorTriggerForm({ actuator, sensors }: Props) {
             <Controller
                 control={control}
                 name="description"
-                defaultValue={""}
                 render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
                     <TextField
                         label="Description"
