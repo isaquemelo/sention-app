@@ -49,7 +49,7 @@ export default function CreateActuatorTrigger({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorTriggerIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorTriggerForm actuator={actuator} sensors={device.sensors} submitForm={newActuatorTrigger}/>}
+                {actuator && device && <ActuatorTriggerForm sensors={device.sensors} submitForm={newActuatorTrigger}/>}
             </div>
 
         </div>

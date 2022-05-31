@@ -20,7 +20,6 @@ import ActuatorTrigger from "../../types/ActuatorTrigger";
 type Props = {
     submitForm: (data: StructuredFormData) => any,
     actuatorTrigger?: ActuatorTrigger
-    actuator: Actuator,
     sensors: Sensor[],
 }
 
@@ -35,7 +34,7 @@ type StructuredFormData = {
     dataSource?: string
 }
 
-export default function ActuatorTriggerForm({ actuator, sensors, actuatorTrigger, submitForm}: Props) {
+export default function ActuatorTriggerForm({sensors, actuatorTrigger, submitForm}: Props) {
     const { register, handleSubmit, getValues, watch, formState: { errors }, control, } = useForm(
         {
             defaultValues: {

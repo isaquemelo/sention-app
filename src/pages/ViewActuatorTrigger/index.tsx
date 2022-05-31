@@ -58,7 +58,7 @@ export default function ViewActuatorTrigger({}: Props){
             <div className="container page">
                 {actuatorTrigger && actuator && device &&
                     <>
-                        <ActuatorTriggerForm actuator={actuator} sensors={device.sensors} actuatorTrigger={actuatorTrigger} submitForm={saveActuatorTrigger}/>
+                        <ActuatorTriggerForm sensors={device.sensors} actuatorTrigger={actuatorTrigger} submitForm={saveActuatorTrigger}/>
                     </>
                 }
 
