@@ -26,7 +26,7 @@ function TextField({ type = "text", label, disabled = false, value, placeholder,
         <div className={`textfield ${isError ? "textfield--error" : ""}`}>
             <label>
                 <span>{label}</span>
-                {!multiline && <input value={value} type={type} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required disabled={disabled} autoComplete={autocomplete ? "on" : "false"} />}
+                {!multiline && <input value={value} type={type} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required disabled={disabled} autoComplete={autocomplete ? "on" : "false"} {...(type === 'number' ? { "step": 0.1 } : {})} />}
                 {multiline && <textarea value={value} placeholder={placeholder} onChange={handleOnChange} onBlur={onBlur} required autoComplete={autocomplete ? "on" : "false"} />}
 
             </label>

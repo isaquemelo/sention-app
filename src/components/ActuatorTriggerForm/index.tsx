@@ -63,7 +63,7 @@ export default function ActuatorTriggerForm({ actuator, sensors, actuatorTrigger
             name,
             action,
             logicOperator: operator,
-            value: parseInt(limitValue as string),
+            value: parseFloat(limitValue as string),
             description,
             sensorId: targetSensor,
             dataSource: isMultiplePortSensor ? dataSource : undefined

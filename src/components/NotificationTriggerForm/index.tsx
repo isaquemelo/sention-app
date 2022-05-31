@@ -46,7 +46,7 @@ export default function NotificationTriggerForm({ sensor, submitForm, notificati
                 name: notificationTrigger ? notificationTrigger.name : "",
                 dataSource: notificationTrigger ? notificationTrigger.dataSource : "",
                 operator: notificationTrigger ? notificationTrigger.logicOperator : "",
-                value: notificationTrigger ? notificationTrigger.value : "",
+                value: notificationTrigger ? notificationTrigger.value.toString() : "",
                 content: notificationTrigger ? notificationTrigger.content : "",
             }
         });
@@ -62,7 +62,7 @@ export default function NotificationTriggerForm({ sensor, submitForm, notificati
             name,
             type: "EMAIL",
             logicOperator: operator,
-            value: parseInt(limitValue as string),
+            value: parseFloat(limitValue as string),
             content,
             dataSource: isMultiplePortSensor ? dataSource : undefined
         }
@@ -82,7 +82,7 @@ export default function NotificationTriggerForm({ sensor, submitForm, notificati
         }
     })
 
-    const sensorSchema = sensorSchemas.find(schema => schema.id === sensor.type)
+    const sensorSchema = sensorSchemas.find(schema => sensor && schema.id === sensor.type)
     const isMultiplePortSensor = sensorSchema && sensorSchema.port.multiplePort
     const sensorSourceOptions = isMultiplePortSensor && sensorSchema.port.sources ? sensorSchema.port.sources.map(({ id, label }) => {
         return {
