@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ReactComponent as UnknownTypeIcon } from '@images/unknown-type.svg';
 import { ReactComponent as AddIcon } from '@images/plus-circle.svg';
+import { ReactComponent as GoToIcon } from '@images/go-to-arrow.svg';
 
 
 import "./style.scss";
@@ -71,6 +72,15 @@ export default function ViewSensor({ }: Props) {
                 {sensor && device &&
                     <>
                         <SensorForm updateIcon={updateSensorIcon} device={device} sensor={sensor} submitForm={saveSensor} />
+
+                        <div className="notification-triggers">
+                            <div className="notification-triggers-heading">
+                                <Typography className="notification-triggers__title" type="title" size="m">Sensor data</Typography>
+                                <button onClick={() => { navigate(`/sensors/${sensor.id}/data`) }}>
+                                    <GoToIcon />
+                                </button>
+                            </div>
+                        </div>
 
                         {sensor.notificationTriggers &&
                             <div className="notification-triggers">
