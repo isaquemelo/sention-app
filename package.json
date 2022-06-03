@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite build && vite preview",
+    "serve": "vite build && vite preview --host",
     "preview": "vite preview"
   },
   "dependencies": {

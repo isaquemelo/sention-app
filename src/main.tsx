@@ -6,6 +6,12 @@ import App from './App'
 
 const queryClient = new QueryClient();
 
+import { registerSW } from "virtual:pwa-register";
+
+if ("serviceWorker" in navigator) {
+  registerSW();
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
