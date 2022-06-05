@@ -32,20 +32,18 @@ export default function Dashboard() {
     const skeletonArray = new Array(15).fill(0)
 
     return (
-        <>
+        <div className="dashboard">
             <div className="devices">
                 <div className="container page">
                     <div className="devices-list">
-                        {!isLoading &&
-                            devices?.map(device => {
-                                return <ViewDeviceData device={device} />
+                        {!isLoading && devices &&
+                            devices.map(device => {
+                                return <ViewDeviceData device={device} key={device.id} />
                             })
                         }
 
                         {isLoading &&
-                            skeletonArray.map(({ value, index }) => {
-                                return <ListItem key={index} label={index} isSkeleton={true} />
-                            })
+                            <span>Loading...</span>
                         }
                     </div>
                 </div>
@@ -58,6 +56,6 @@ export default function Dashboard() {
                 ]} />
 
             </div>
-        </>
+        </div>
     )
 }

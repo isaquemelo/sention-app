@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -48,13 +48,13 @@ export default function ViewDeviceData({ device }: Props) {
                         const FunctionIcon = buildSensorIcon(sensor.type)
 
                         return (
-                            <>
+                            <Fragment key={sensor.id}>
                                 {/* Sensor with sources */}
                                 {sensorSchema?.port.multiplePort && (
                                     <>
                                         {sensorSchema.port.sources?.map(({ id, label, unit }) => {
                                             return (
-                                                <Link to={`sensors/${sensor.id}`} className="sensor-block" data-sensor-type={sensor.type} key={sensor.id}>
+                                                <Link key={id + sensor.id} to={`sensors/${sensor.id}`} className="sensor-block" data-sensor-type={sensor.type}>
                                                     <div className="title">
                                                         <div className="icon-wrapper">
                                                             <FunctionIcon />
@@ -79,7 +79,7 @@ export default function ViewDeviceData({ device }: Props) {
 
                                 {/* Sensor with single source */}
                                 {!sensorSchema?.port.sources && (
-                                    <Link to={`sensors/${sensor.id}`} className={`sensor-block`} key={sensor.id} data-sensor-type={sensor.type}>
+                                    <Link key={sensor.id} to={`sensors/${sensor.id}`} className={`sensor-block`} data-sensor-type={sensor.type}>
                                         <div className="title">
                                             <div className="icon-wrapper">
                                                 <FunctionIcon />
@@ -95,13 +95,13 @@ export default function ViewDeviceData({ device }: Props) {
                                     </Link>
                                 )}
 
-                            </>
+                            </Fragment>
                         )
                     }
                 })}
 
                 {sensorsData && sensorsData.length % 2 !== 0 && (
-                    <Link to={`sensors/create/${device.id}`} className={`sensor-block sensor-block--skeleton`}>
+                    <Link key={"last-but-not-least"} to={`sensors/create/${device.id}`} className={`sensor-block sensor-block--skeleton`}>
                         <PlusCircleIcon />
                         <span>New sensor</span>
                     </Link>

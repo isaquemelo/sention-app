@@ -23,7 +23,7 @@ button {
     width: 100%;
 
     &.page {
-        margin-bottom: 160px;
+        margin-bottom: 190px;
         padding-top: 2.75rem;
 
         h1 {
@@ -34,7 +34,7 @@ button {
 }
 
 @media (max-width: 700px) {
-    .container { 
+    .container {
         width: calc(100% - 60px);
     }
 }
