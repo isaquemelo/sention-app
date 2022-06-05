@@ -1,6 +1,7 @@
 export default class SensorData {
     id?: string
-    data: number | object
+    sensorId: string
+    data: object
     createdAt: Date
 
     constructor(props: SensorData) {
