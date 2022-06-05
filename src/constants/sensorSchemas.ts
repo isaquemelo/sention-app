@@ -9,16 +9,19 @@ const sensorSchemas = [
             'sources': [
                 {
                     'id': 'TEMPERATURE',
-                    'label': 'Temperature'
+                    'label': 'Temperature',
+                    'unit': '°C'
                 },
 
                 {
                     'id': 'PRESSURE',
-                    'label': 'Air pressure'
+                    'label': 'Air pressure',
+                    'unit': 'Pa'
                 },
                 {
                     'id': 'ALTITUDE',
-                    'label': 'Altitude'
+                    'label': 'Altitude',
+                    'unit': 'm'
                 },
             ],
             'meta': [
