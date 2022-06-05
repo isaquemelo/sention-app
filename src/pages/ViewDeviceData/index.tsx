@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { ReactComponent as DatabaseIcon } from '@images/database.svg';
-import { ReactComponent as BoxIcon } from '@images/box.svg';
+import { ReactComponent as SwitchOnIcon } from '@images/switch-on.svg';
+import { ReactComponent as SwitchOffIcon } from '@images/switch-off.svg';
+import { ReactComponent as PlusCircleIcon } from '@images/plus-circle.svg';
 import { ReactComponent as RefreshIcon } from '@images/refresh.svg';
 
 import "./style.scss";
@@ -29,8 +30,7 @@ type Props = {
 
 export default function ViewDeviceData({ device }: Props) {
     const sensorsIds = device.sensors.map((sensor) => sensor.id!)
-    const { isLoading: isLoadingSensorsData, data: sensorsData } = useQuery(["sensorsData", device.id], () => getSensorsData(sensorsIds), { refetchInterval: 5000 })
-    console.log(sensorsData)
+    const { isLoading: isLoadingSensorsData, data: sensorsData } = useQuery(["sensorsData", device.id], () => getSensorsData(sensorsIds), { refetchInterval: 1500 })
 
     return (
         <div className="view-device-data">
@@ -48,46 +48,64 @@ export default function ViewDeviceData({ device }: Props) {
                         const FunctionIcon = buildSensorIcon(sensor.type)
 
                         return (
-                            <div className="sensor-block" data-sensor-type={sensor.type} key={sensor.id}>
-
-
-                                {/* Sensor with multiple ports */}
+                            <>
+                                {/* Sensor with sources */}
                                 {sensorSchema?.port.multiplePort && (
                                     <>
-                                        <div className="title">
-                                            <FunctionIcon />
-                                            <span>{`${sensor.name}`}</span>
-                                            {sensorSchema.port.sources?.map(({ id, label, unit }) => {
-                                                return (
-                                                    <>
-                                                        <span className="label">{label}</span>
+                                        {sensorSchema.port.sources?.map(({ id, label, unit }) => {
+                                            return (
+                                                <Link to={`sensors/${sensor.id}`} className="sensor-block" data-sensor-type={sensor.type} key={sensor.id}>
+                                                    <div className="title">
+                                                        <div className="icon-wrapper">
+                                                            <FunctionIcon />
+                                                        </div>
+                                                        <span>{`${label}`}</span>
+                                                    </div>
+
+                                                    <div className="data" data-value-type={id}>
                                                         <span className="value">
                                                             {/* @ts-ignore */}
                                                             {(Math.round(receivedData.data[id] * 10) / 10)}
                                                             {unit}
                                                         </span>
-                                                    </>
-                                                )
-                                            })}
-                                        </div>
+                                                    </div>
 
+                                                    <span className="source">{`${sensor.name}`}</span>
+                                                </Link>
+                                            )
+                                        })}
                                     </>
                                 )}
 
-                                {/* Sensor with multiple ports */}
-                                {!sensorSchema?.port.multiplePort && (
-                                    <>
+                                {/* Sensor with single source */}
+                                {!sensorSchema?.port.sources && (
+                                    <Link to={`sensors/${sensor.id}`} className={`sensor-block`} key={sensor.id} data-sensor-type={sensor.type}>
                                         <div className="title">
-                                            <FunctionIcon />
+                                            <div className="icon-wrapper">
+                                                <FunctionIcon />
+                                            </div>
                                             <span>{`${sensor.name}`}</span>
                                         </div>
-                                        <span className="data">{`${((receivedData?.data as { value: string }).value)}`}</span>
-                                    </>
+                                        <div className="data">
+                                            {`${((receivedData?.data as { value: number }).value)}`}
+                                            {sensorSchema?.id === "DIGITAL" && (
+                                                ((receivedData?.data as { value: number }).value === 1) ? <SwitchOnIcon /> : <SwitchOffIcon />
+                                            )}
+                                        </div>
+                                    </Link>
                                 )}
-                            </div>
+
+                            </>
                         )
                     }
                 })}
+
+                {sensorsData && sensorsData.length % 2 !== 0 && (
+                    <Link to={`sensors/create/${device.id}`} className={`sensor-block sensor-block--skeleton`}>
+                        <PlusCircleIcon />
+                        <span>New sensor</span>
+                    </Link>
+                )}
 
             </div>
         </div>

@@ -10,6 +10,8 @@ export async function getSensorsData(sensorIds: string[], date: Date = new Date(
         return data[0]
     })
 
-    const allData: SensorData[] = await Promise.all(promises)
+    let allData: SensorData[] = await Promise.all(promises)
+    allData = allData.filter(data => data !== undefined)
+
     return allData;
 }
