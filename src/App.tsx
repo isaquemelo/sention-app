@@ -24,6 +24,7 @@ import ViewActuator from './pages/ViewActuator'
 import ViewNotificationTrigger from './pages/ViewNotificationTrigger'
 import ViewSensorData from './pages/ViewSensorData'
 import ViewActuatorTrigger from './pages/ViewActuatorTrigger'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 
@@ -35,7 +36,7 @@ function App() {
 
         <Route path="/" element={
           <AuthRoute>
-            <InjectLayoutElements element={<h1>Dashboard</h1>} />
+            <InjectLayoutElements element={<Dashboard />} />
           </AuthRoute>
         } />
 
