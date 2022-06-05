@@ -61,14 +61,6 @@ export default function Actuators() {
                         }
                     </div>
                 </div>
-
-                <FloatingButton options={[
-                    {
-                        label: 'Associate new device',
-                        onClick: () => navigate('setup-device')
-                    },
-                ]} />
-
             </div>
         </>
     )
