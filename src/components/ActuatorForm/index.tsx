@@ -89,7 +89,7 @@ export default function ActuatorForm({ device, actuator, submitForm }: Props) {
                         value={parseInt(value)}
                         onChange={onChange}
                         label={`Port`}
-                        acceptedPorts={pins.ADC_PINS}
+                        acceptedPorts={pins.GPIO_PINS}
                         usedPorts={usedPorts}
                         isError={error ? true : false}
                     />

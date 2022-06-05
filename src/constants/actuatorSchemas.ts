@@ -5,7 +5,7 @@ const actuatorSchemas = [
         'id': `DIGITAL`,
         'label': 'Digital writing',
         'port': {
-            'supportedPorts': pins.ADC_PINS
+            'supportedPorts': pins.GPIO_PINS
         }
     }
 ]

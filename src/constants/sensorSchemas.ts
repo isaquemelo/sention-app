@@ -48,7 +48,9 @@ const sensorSchemas = [
         'label': 'Generic analogic reading',
         'port': {
             'multiplePort': false,
-            'supportedPorts': pins.ADC_PINS
+            // Some pins are blocked due to wifi network (check ADC pins in the doc)
+            // https://docs.micropython.org/en/latest/esp32/quickref.html#adc-analog-to-digital-conversion
+            'supportedPorts': [32, 33, 34, 35, 36, 39]
         }
     },
 
@@ -57,7 +59,8 @@ const sensorSchemas = [
         'label': 'Digital reading',
         'port': {
             'multiplePort': false,
-            'supportedPorts': pins.ADC_PINS
+            // https://docs.micropython.org/en/latest/esp32/quickref.html#pins-and-gpio
+            'supportedPorts': [0, 2, 4, 5, 12, 13, 14, 15, 21, 22, 25, 26, 27, 32, 33, 34, 35, 36, 39]
         }
     }
 ]
