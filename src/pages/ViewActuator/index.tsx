@@ -17,6 +17,7 @@ import { updateActuator } from "../../services/actuators/updateActuator";
 import Typography from "../../components/Typography";
 import ListTriggers from "../../components/ListTriggers";
 import ActuatorTrigger from "../../types/ActuatorTrigger";
+import messages from "../../constants/messages";
 
 type Props = {
 
@@ -45,6 +46,7 @@ export default function ViewActuator({ }: Props) {
             onSuccess: async () => {
                 queryClient.invalidateQueries(["device", device!.id]);
                 await queryClient.invalidateQueries(["actuator", actuatorId])
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
             }
         }
     )
@@ -57,12 +59,12 @@ export default function ViewActuator({ }: Props) {
                 {actuator && device &&
                     <>
                         <ActuatorForm device={device} actuator={actuator} submitForm={saveActuator} />
-                    
+
                         {actuator.triggers &&
                             <div className="actuator-triggers">
                                 <div className="actuator-triggers-heading">
                                     <Typography className="actuator-triggers__title" type="title" size="m">Actuator triggers</Typography>
-                                    <button onClick={() => {navigate(`/actuators/${actuator.id}/trigger/create`)}}>
+                                    <button onClick={() => { navigate(`/actuators/${actuator.id}/trigger/create`) }}>
                                         <AddIcon />
                                     </button>
                                 </div>

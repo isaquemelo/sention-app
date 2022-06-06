@@ -32,6 +32,8 @@ export default function ViewDeviceData({ device }: Props) {
     const sensorsIds = device.sensors.map((sensor) => sensor.id!)
     const { isLoading: isLoadingSensorsData, data: sensorsData } = useQuery(["sensorsData", device.id], () => getSensorsData(sensorsIds), { refetchInterval: 1500 })
 
+    const navigator = useNavigate()
+
     return (
         <div className="view-device-data">
             <div className="heading">
@@ -108,11 +110,12 @@ export default function ViewDeviceData({ device }: Props) {
                 )}
 
 
-                {device.sensors.length === 0 && (
+                {device.sensors.length === 0 || sensorsData?.length === 0 && (
                     <div className="no-results">
                         <BoxIcon />
                         <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
-                        <Typography type="body" alignment="center" size="m">If this is unexpected, check if your sensor is properly configured.</Typography>
+                        <Typography type="body" alignment="center" size="m">Add sensors to your device and check if your sensor is properly configured.</Typography>
+                        <Button label="Edit device" showArrow onClick={() => navigator(`/devices/${device.id}`)} />
                     </div>
                 )}
 

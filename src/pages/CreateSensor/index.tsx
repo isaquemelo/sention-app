@@ -14,6 +14,7 @@ import { getDevice } from "../../services/devices/getDevice";
 import SensorForm from "../../components/SensorForm";
 import buildSensorIcon from "../../builders/buildSensorIcon";
 import { createSensor } from "../../services/sensors/createSensor";
+import messages from "../../constants/messages";
 
 type Props = {
 
@@ -39,6 +40,7 @@ export default function CreateSensor({ }: Props) {
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(["device", device!.id]);
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
                 navigate(`/devices/${device!.id}`)
             }
         }
