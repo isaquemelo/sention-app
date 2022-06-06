@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ReactComponent as SwitchOnIcon } from '@images/switch-on.svg';
 import { ReactComponent as SwitchOffIcon } from '@images/switch-off.svg';
 import { ReactComponent as PlusCircleIcon } from '@images/plus-circle.svg';
-import { ReactComponent as RefreshIcon } from '@images/refresh.svg';
+import { ReactComponent as BoxIcon } from '@images/box.svg';
 
 import "./style.scss";
 
@@ -105,6 +105,15 @@ export default function ViewDeviceData({ device }: Props) {
                         <PlusCircleIcon />
                         <span>New sensor</span>
                     </Link>
+                )}
+
+
+                {device.sensors.length === 0 && (
+                    <div className="no-results">
+                        <BoxIcon />
+                        <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
+                        <Typography type="body" alignment="center" size="m">If this is unexpected, check if your sensor is properly configured.</Typography>
+                    </div>
                 )}
 
             </div>
