@@ -34,6 +34,8 @@ export default function ViewDeviceData({ device }: Props) {
 
     const navigator = useNavigate()
 
+    console.log(device.sensors, sensorsData)
+
     return (
         <div className="view-device-data">
             <div className="heading">
@@ -110,7 +112,7 @@ export default function ViewDeviceData({ device }: Props) {
                 )}
 
 
-                {device.sensors.length === 0 || sensorsData?.length === 0 && (
+                {(device.sensors.length === 0 || sensorsData?.length === 0) && (
                     <div className="no-results">
                         <BoxIcon />
                         <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
