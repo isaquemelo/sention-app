@@ -121,7 +121,7 @@ export default function Device() {
 
                 {actuators.length > 0 &&
                     <div className="actuators-list">
-                        <Typography type="title" size="m">Acutators</Typography>
+                        <Typography type="title" size="m">Actuators</Typography>
 
                         {!isLoading &&
                             <ListActuators actuators={actuators} />
