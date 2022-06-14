@@ -17,7 +17,7 @@ export default function TestConnection({ nextStep }: Props) {
 
     const testConnection = () => {
         setIsTestingConnection(true);
-        axios.get(`http://192.168.4.1/ping`, { timeout: 5000 }).then(() => {
+        axios.get(`https://192.168.4.1/ping`, { timeout: 5000 }).then(() => {
             nextStep()
         }).catch(() => {
             alert("Sorry, we could not validate your connection to the device.")
