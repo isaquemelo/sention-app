@@ -8,6 +8,7 @@ import ActuatorTrigger from "../../types/ActuatorTrigger"
 import { ReactComponent as ActuatorTriggerIcon } from '@images/actuator-trigger.svg';
 import ActuatorTriggerForm from "../../components/ActuatorTriggerForm"
 import { getDevice } from "../../services/devices/getDevice"
+import messages from "../../constants/messages"
 
 type Props = {
 
@@ -24,17 +25,17 @@ type StructuredFormData = {
     dataSource?: string
 }
 
-export default function ViewActuatorTrigger({}: Props){
+export default function ViewActuatorTrigger({ }: Props) {
     const navigate = useNavigate();
     const queryClient = useQueryClient()
 
-    const {triggerId = ""} = useParams();
-    const {isLoading, data: actuatorTrigger} = useQuery(["actuatorTrigger", triggerId], () => getTrigger(triggerId))
-    const {isLoading: isLoadingActuator, data: actuator} = useQuery(["actuator", actuatorTrigger?.actuatorId], () => actuatorTrigger && actuatorTrigger.actuatorId ? getActuator(actuatorTrigger.actuatorId) : undefined)
+    const { triggerId = "" } = useParams();
+    const { isLoading, data: actuatorTrigger } = useQuery(["actuatorTrigger", triggerId], () => getTrigger(triggerId))
+    const { isLoading: isLoadingActuator, data: actuator } = useQuery(["actuator", actuatorTrigger?.actuatorId], () => actuatorTrigger && actuatorTrigger.actuatorId ? getActuator(actuatorTrigger.actuatorId) : undefined)
     const { data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
 
 
-    const {mutate: saveActuatorTrigger} = useMutation(
+    const { mutate: saveActuatorTrigger } = useMutation(
         (event: StructuredFormData) => {
             return updateTrigger(new ActuatorTrigger({
                 ...event
@@ -44,6 +45,8 @@ export default function ViewActuatorTrigger({}: Props){
             onSuccess: async () => {
                 queryClient.invalidateQueries(["actuatorTrigger", actuatorTrigger!.id])
                 await queryClient.invalidateQueries(["actuator", actuatorTrigger!.actuatorId])
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
+
                 navigate(`/actuators/${actuatorTrigger?.actuatorId}`)
             }
         }
@@ -51,14 +54,14 @@ export default function ViewActuatorTrigger({}: Props){
 
     const pageTitle = isLoading || !actuatorTrigger ? "Loading..." : actuatorTrigger.name
 
-    return(
+    return (
         <div className="view-actuator">
             <ShortHeader title={pageTitle} icon={<ActuatorTriggerIcon />} />
 
             <div className="container page">
                 {actuatorTrigger && actuator && device &&
                     <>
-                        <ActuatorTriggerForm sensors={device.sensors} actuatorTrigger={actuatorTrigger} submitForm={saveActuatorTrigger}/>
+                        <ActuatorTriggerForm sensors={device.sensors} actuatorTrigger={actuatorTrigger} submitForm={saveActuatorTrigger} />
                     </>
                 }
 

@@ -14,6 +14,7 @@ import { getActuator } from "../../services/actuators/getActuator";
 import ActuatorTriggerForm from "../../components/ActuatorTriggerForm";
 import ActuatorTrigger from "../../types/ActuatorTrigger";
 import { createTrigger } from "../../services/actuatorTrigger/createTrigger";
+import messages from "../../constants/messages";
 
 
 type Props = {
@@ -28,7 +29,7 @@ export default function CreateActuatorTrigger({ }: Props) {
     const { data: actuator } = useQuery(["actuator", actuatorId], () => getActuator(actuatorId))
     const { data: device } = useQuery(["device", actuator?.deviceId], () => actuator && actuator.deviceId ? getDevice(actuator.deviceId) : undefined)
 
-    const {mutate: newActuatorTrigger} = useMutation(
+    const { mutate: newActuatorTrigger } = useMutation(
         (actuatorTrigger: ActuatorTrigger) => {
             return createTrigger(actuatorId, new ActuatorTrigger({
                 ...actuatorTrigger
@@ -37,6 +38,7 @@ export default function CreateActuatorTrigger({ }: Props) {
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries("actuators")
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
                 navigate(`/actuators/${actuatorId}`)
             }
         }
@@ -49,7 +51,7 @@ export default function CreateActuatorTrigger({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorTriggerIcon />} />
 
             <div className="container page">
-                {actuator && device && <ActuatorTriggerForm sensors={device.sensors} submitForm={newActuatorTrigger}/>}
+                {actuator && device && <ActuatorTriggerForm sensors={device.sensors} submitForm={newActuatorTrigger} />}
             </div>
 
         </div>

@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ReactComponent as SwitchOnIcon } from '@images/switch-on.svg';
 import { ReactComponent as SwitchOffIcon } from '@images/switch-off.svg';
 import { ReactComponent as PlusCircleIcon } from '@images/plus-circle.svg';
-import { ReactComponent as RefreshIcon } from '@images/refresh.svg';
+import { ReactComponent as BoxIcon } from '@images/box.svg';
 
 import "./style.scss";
 
@@ -31,6 +31,10 @@ type Props = {
 export default function ViewDeviceData({ device }: Props) {
     const sensorsIds = device.sensors.map((sensor) => sensor.id!)
     const { isLoading: isLoadingSensorsData, data: sensorsData } = useQuery(["sensorsData", device.id], () => getSensorsData(sensorsIds), { refetchInterval: 1500 })
+
+    const navigator = useNavigate()
+
+    console.log(device.sensors, sensorsData)
 
     return (
         <div className="view-device-data">
@@ -105,6 +109,16 @@ export default function ViewDeviceData({ device }: Props) {
                         <PlusCircleIcon />
                         <span>New sensor</span>
                     </Link>
+                )}
+
+
+                {(device.sensors.length === 0 || sensorsData?.length === 0) && (
+                    <div className="no-results">
+                        <BoxIcon />
+                        <Typography type="body" alignment="center" size="l">Nothing here yet</Typography>
+                        <Typography type="body" alignment="center" size="m">Add sensors to your device and check if your sensor is properly configured.</Typography>
+                        <Button label="Edit device" showArrow onClick={() => navigator(`/devices/${device.id}`)} />
+                    </div>
                 )}
 
             </div>

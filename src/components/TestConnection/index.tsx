@@ -7,9 +7,18 @@ import "./style.scss";
 import wifiIcon from '@images/wifi-icon.svg'
 import Typography from "../Typography";
 import Button from "../Button";
+import xfetch from "../../helpers/xfetch";
 
 type Props = {
     nextStep: Function,
+}
+
+// @ts-ignore
+if (!window.popup) {
+    // @ts-ignore
+    window.popup = window.open("http://192.168.4.1/server.html", '_blank', 'toolbar=no,titlebar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=12000, top=12000,width=10,height=10,visible=none');
+    // @ts-ignore
+    // setTimeout(function () { window.popup.close(); }, 6000)
 }
 
 export default function TestConnection({ nextStep }: Props) {
@@ -17,13 +26,25 @@ export default function TestConnection({ nextStep }: Props) {
 
     const testConnection = () => {
         setIsTestingConnection(true);
-        axios.get(`http://192.168.4.1/ping`, { timeout: 5000 }).then(() => {
+
+        xfetch('http://192.168.4.1/ping').then(() => {
             nextStep()
         }).catch(() => {
             alert("Sorry, we could not validate your connection to the device.")
         }).finally(() => {
             setIsTestingConnection(false);
         })
+        // //@ts-ignore
+        // .then(res => res.json())
+        // .then(console.log)
+
+        // axios.get(`http://192.168.4.1/ping`, { timeout: 5000 }).then(() => {
+        //     nextStep()
+        // }).catch(() => {
+        //     alert("Sorry, we could not validate your connection to the device.")
+        // }).finally(() => {
+        //     setIsTestingConnection(false);
+        // })
     }
 
     return (

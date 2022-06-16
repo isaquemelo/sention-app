@@ -20,6 +20,7 @@ import { updateSensor } from "../../services/sensors/updateSensor";
 import ListTriggers from "../../components/ListTriggers";
 import Typography from "../../components/Typography";
 import NotificationTrigger from "../../types/NotificationTrigger";
+import messages from "../../constants/messages";
 
 type Props = {
 
@@ -46,6 +47,7 @@ export default function ViewSensor({ }: Props) {
             onSuccess: async () => {
                 queryClient.invalidateQueries(["device", device!.id]);
                 await queryClient.invalidateQueries(["sensor", sensorId]);
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
             }
         }
     );

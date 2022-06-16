@@ -14,6 +14,7 @@ import { getDevice } from "../../services/devices/getDevice";
 import ActuatorForm from "../../components/ActuatorForm";
 import { createActuator } from "../../services/actuators/createActuator";
 import Actuator from "../../types/Actuator";
+import messages from "../../constants/messages";
 
 type Props = {
 
@@ -28,7 +29,7 @@ export default function CreateActuator({ }: Props) {
     const { deviceId = "" } = useParams();
     const { isLoading, data: device } = useQuery(["device", deviceId], () => getDevice(deviceId))
 
-    const {mutate: newActuator} = useMutation(
+    const { mutate: newActuator } = useMutation(
         (event: StructedFormData) => {
             return createActuator(device!.id, new Actuator({
                 ...event
@@ -37,6 +38,7 @@ export default function CreateActuator({ }: Props) {
         {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(["device", device!.id]);
+                alert(messages.REBOOT_TO_APPLY_CHANGES)
                 navigate(`/devices/${device!.id}`)
             }
         }
@@ -49,7 +51,7 @@ export default function CreateActuator({ }: Props) {
             <ShortHeader title={pageTitle} icon={<ActuatorIcon />} />
 
             <div className="container page">
-                {device && <ActuatorForm device={device} submitForm={newActuator}/>}
+                {device && <ActuatorForm device={device} submitForm={newActuator} />}
             </div>
 
         </div>
