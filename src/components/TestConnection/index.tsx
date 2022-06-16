@@ -29,6 +29,7 @@ export default function TestConnection({ nextStep }: Props) {
 
         // Awaits until device is fully loaded
         setTimeout(() => {
+            window.focus()
             xfetch('http://192.168.4.1/ping').then(() => {
                 success = true
                 nextStep()
