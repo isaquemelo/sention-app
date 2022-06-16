@@ -16,8 +16,7 @@
         grid-template-columns: repeat(12, minmax(0, 1fr));
         grid-auto-rows: 1fr;
 
-        grid-column-gap: 10px;
-        grid-row-gap: 10px;
+        grid-gap: 12px;
 
         .sensor-block:nth-child(1n) {
             grid-column: 1 / 6;
