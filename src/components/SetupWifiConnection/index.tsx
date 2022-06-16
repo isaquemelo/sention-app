@@ -9,6 +9,7 @@ import Typography from "../Typography";
 import Button from "../Button";
 import TextField from "../TextField";
 import useSessionStorage from "../../hooks/useLocalStorage";
+import xfetch from "../../helpers/xfetch";
 
 type Props = {
     nextStep: Function,
@@ -41,10 +42,25 @@ export default function SetupWifiConnection({ nextStep }: Props) {
             }
         }
 
-        axios.post(`http://192.168.4.1/credentials`, data).then(() => {
+
+        xfetch(`http://192.168.4.1/credentials`, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        }).then(async () => {
             setError(false);
-            axios.post(`http://192.168.4.1/reboot`, data, { timeout: 5000 })
             nextStep()
+
+            setTimeout(() => {
+                // @ts-ignore
+                window.popup.close()
+            }, 1000)
+
+            xfetch('http://192.168.4.1/reboot', {
+                method: 'POST',
+                body: JSON.stringify(data),
+            })
+
+
         }).catch(() => {
             setError(true);
 
@@ -52,6 +68,18 @@ export default function SetupWifiConnection({ nextStep }: Props) {
         }).finally(() => {
             setIsSaving(false);
         })
+
+        // axios.post(`http://192.168.4.1/credentials`, data).then(() => {
+        //     setError(false);
+        //     axios.post(`http://192.168.4.1/reboot`, data, { timeout: 5000 })
+        //     nextStep()
+        // }).catch(() => {
+        //     setError(true);
+
+        //     alert("Sorry, we could not connect to this network. Check the credentials.")
+        // }).finally(() => {
+        //     setIsSaving(false);
+        // })
     }
 
     return (
