@@ -68,7 +68,7 @@ export default function ActuatorForm({ device, actuator, submitForm }: Props) {
             <Controller
                 control={control}
                 name="name"
-                rules={{ required: true, minLength: 5 }}
+                rules={{ required: true, minLength: 1 }}
                 render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <TextField
                         label="Name"
